@@ -55,7 +55,7 @@ class CNNGuessr(nn.Module):
         x = self.conv5(x)
         x = x.view(-1, 16 * 6 * 2)
         x = F.relu(self.fc1(self.drop(x)))
-        x = F.tanh(self.fc2(self.drop(x)))
+        x = torch.tanh(self.fc2(self.drop(x)))
 
         return x
 
