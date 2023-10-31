@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#BSUB -J cnnguessr
+#BSUB -J vitguessr
 #BSUB -oo hpc_logs/vitguessr.out
 #BSUB -eo hpc_logs/vitguessr.err
 
