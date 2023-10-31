@@ -1,8 +1,8 @@
 #!/bin/bash -l
 
 #BSUB -J cnnguessr
-#BSUB -oo hpc_logs/cnnguessr.out
-#BSUB -eo hpc_logs/cnnguessr.err
+#BSUB -oo hpc_logs/vitguessr.out
+#BSUB -eo hpc_logs/vitguessr.err
 
 
 conda activate cuda111_torch
