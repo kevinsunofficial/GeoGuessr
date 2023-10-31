@@ -9,7 +9,7 @@ import torch
 from torchvision import transforms
 from torch.autograd import Variable
 
-from guessr_model import cnn_guessr
+from guessr_model import vit_guessr
 from utils import geo_distance
 
 
@@ -38,7 +38,7 @@ def main(args):
     model_path = args.model_path
     assert osp.exists(model_path), f'File {model_path} does not exist.'
 
-    guessr = cnn_guessr().to(device)
+    guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
     guessr.load_state_dict(torch.load(model_path, map_location=device))
     guessr.eval()
 
@@ -63,6 +63,8 @@ if __name__ == '__main__':
     parser.add_argument('--model_path', type=str, required=True)
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
+    parser.add_argument('--depth', type=int, default=12)
+    parser.add_argument('--num_heads', type=int, default=12)
     parser.add_argument('--actual_lat', type=float, default=None)
     parser.add_argument('--actual_lng', type=float, default=None)
 
