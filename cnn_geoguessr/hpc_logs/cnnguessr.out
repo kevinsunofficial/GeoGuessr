@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@ly05>
-Subject: Job 1120362: <cnnguessr> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@lt07>
+Subject: Job 1132073: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Mon Oct 30 23:57:30 2023
-Job was executed on host(s) <2*ly05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Mon Oct 30 23:57:51 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Nov  1 01:23:55 2023
+Job was executed on host(s) <2*lt07>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Nov  1 01:50:47 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Mon Oct 30 23:57:51 2023
-Terminated at Tue Oct 31 04:57:56 2023
-Results reported at Tue Oct 31 04:57:56 2023
+Started at Wed Nov  1 01:50:47 2023
+Terminated at Wed Nov  1 14:34:23 2023
+Results reported at Wed Nov  1 14:34:23 2023
 
 Your job looked like:
 
@@ -29,26 +29,31 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_RUNLIMIT: job killed after reaching LSF run time limit.
-Exited with exit code 140.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   35741.00 sec.
-    Max Memory :                                 71 GB
-    Average Memory :                             70.74 GB
-    Total Requested Memory :                     512.00 GB
-    Delta Memory :                               441.00 GB
+    CPU time :                                   128049.00 sec.
+    Max Memory :                                 70 GB
+    Average Memory :                             69.92 GB
+    Total Requested Memory :                     256.00 GB
+    Delta Memory :                               186.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   18005 sec.
-    Turnaround time :                            18026 sec.
+    Run time :                                   45816 sec.
+    Turnaround time :                            47428 sec.
 
 The output (if any) follows:
 
 Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
+       Range  Distances  Proportion
+0     Street          1    0.000018
+1       City         25    0.000534
+2     Region        250    0.054708
+3    Country        750    0.330080
+4  Continent       2500    0.728064
 
 
 PS:

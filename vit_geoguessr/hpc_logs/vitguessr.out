@@ -1,0 +1,57 @@
+Sender: LSF System <lsfadmin@lf02>
+Subject: Job 1129189: <vitguessr> in cluster <lila> Exited
+
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Oct 31 18:15:02 2023
+Job was executed on host(s) <2*lf02>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Oct 31 20:14:48 2023
+</home/suny4> was used as the home directory.
+</home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
+Started at Tue Oct 31 20:14:48 2023
+Terminated at Tue Oct 31 21:35:33 2023
+Results reported at Tue Oct 31 21:35:33 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash -l
+
+#BSUB -J vitguessr
+#BSUB -oo hpc_logs/vitguessr.out
+#BSUB -eo hpc_logs/vitguessr.err
+
+
+conda activate cuda111_torch
+
+python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
+    --epochs 150 --save_model ./results/ --plot_loss ./results/ --plot_map ./results/
+
+conda deactivate
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   13986.00 sec.
+    Max Memory :                                 72 GB
+    Average Memory :                             69.96 GB
+    Total Requested Memory :                     256.00 GB
+    Delta Memory :                               184.00 GB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                20
+    Run time :                                   4844 sec.
+    Turnaround time :                            12031 sec.
+
+The output (if any) follows:
+
+Training with cuda
+dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
+
+
+PS:
+
+Read file <hpc_logs/vitguessr.err> for stderr output of this job.
+

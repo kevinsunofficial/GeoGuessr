@@ -1,0 +1,9 @@
+  0%|          | 0/150 [00:00<?, ?it/s]  1%|          | 1/150 [10:13<25:24:08, 613.75s/it]  1%|▏         | 2/150 [20:19<25:02:47, 609.24s/it]  2%|▏         | 3/150 [30:12<24:34:26, 601.81s/it]  3%|▎         | 4/150 [40:02<24:12:35, 596.96s/it]  3%|▎         | 5/150 [49:52<23:56:49, 594.55s/it]  4%|▍         | 6/150 [59:42<23:42:43, 592.80s/it]  5%|▍         | 7/150 [1:09:31<23:30:35, 591.86s/it]  5%|▍         | 7/150 [1:16:32<26:03:44, 656.11s/it]
+Traceback (most recent call last):
+  File "train.py", line 119, in <module>
+    main(args)
+  File "train.py", line 63, in main
+    train_running_loss = train_epoch(guessr, optimizer, train_loader, criterion, device, epoch)
+  File "/lila/home/suny4/courses/GeoGuessr/vit_geoguessr/utils.py", line 49, in train_epoch
+    running_loss += loss.detach().cpu().numpy()
+KeyboardInterrupt
