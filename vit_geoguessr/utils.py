@@ -38,6 +38,7 @@ def train_epoch(model, optimizer, data_loader, criterion, device, epoch):
     model.train()
     optimizer.zero_grad()
     running_loss = 0.
+    num_data = 0
     
     for i, data in enumerate(data_loader, 0):
         image, coord = data
@@ -47,16 +48,18 @@ def train_epoch(model, optimizer, data_loader, criterion, device, epoch):
         loss.backward()
 
         running_loss += loss.detach().cpu().numpy()
+        num_data += 1
         optimizer.step()
         optimizer.zero_grad()
     
-    return running_loss
+    return running_loss / num_data
 
 
 @torch.no_grad()
 def eval_epoch(model, data_loader, criterion, device, epoch):
     model.eval()
     running_loss = 0.
+    num_data = 0
     
     for i, data in enumerate(data_loader, 0):
         image, coord = data
@@ -65,8 +68,9 @@ def eval_epoch(model, data_loader, criterion, device, epoch):
         loss = criterion(output, coord)
 
         running_loss += loss.detach().cpu().numpy()
+        num_data += 1
     
-    return running_loss
+    return running_loss / num_data
 
 
 def plot_loss(plot_dir, train_loss, valid_loss, depth, num_heads, epochs):
