@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lf02>
-Subject: Job 1129189: <vitguessr> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@lx11>
+Subject: Job 1129542: <vitguessr> in cluster <lila> Exited
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Oct 31 18:15:02 2023
-Job was executed on host(s) <2*lf02>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Oct 31 20:14:48 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Oct 31 21:36:40 2023
+Job was executed on host(s) <2*lx11>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Oct 31 23:18:25 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Tue Oct 31 20:14:48 2023
-Terminated at Tue Oct 31 21:35:33 2023
-Results reported at Tue Oct 31 21:35:33 2023
+Started at Tue Oct 31 23:18:25 2023
+Terminated at Thu Nov  2 11:18:26 2023
+Results reported at Thu Nov  2 11:18:26 2023
 
 Your job looked like:
 
@@ -29,21 +29,21 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_OWNER: job killed by owner.
-Exited with exit code 130.
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
 
 Resource usage summary:
 
-    CPU time :                                   13986.00 sec.
-    Max Memory :                                 72 GB
-    Average Memory :                             69.96 GB
+    CPU time :                                   183746.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.92 GB
     Total Requested Memory :                     256.00 GB
-    Delta Memory :                               184.00 GB
+    Delta Memory :                               185.00 GB
     Max Swap :                                   -
     Max Processes :                              5
-    Max Threads :                                20
-    Run time :                                   4844 sec.
-    Turnaround time :                            12031 sec.
+    Max Threads :                                21
+    Run time :                                   129602 sec.
+    Turnaround time :                            135706 sec.
 
 The output (if any) follows:
 
