@@ -15,7 +15,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 
 from geodataset import GeoDataset, rawGeoDataset
-from guessr_model import cnn_guessr
+from guessr_model import cnn_guessr_no_padding, cnn_guessr_full_padding
 from utils import distance_loss, train_epoch, eval_epoch, plot_loss, plot_map, plot_stats
 
 
@@ -23,8 +23,12 @@ def main(args):
     device = 'cpu'
     if torch.cuda.is_available():
         device = 'cuda'
-    elif torch.backends.mps.is_available():
-        device = 'mps:0'
+    else:
+        try:
+            if torch.backends.mps.is_available():
+                device = 'mps:0'
+        except:
+            device = 'cpu'
     device = torch.device(device)
 
     print(f'Training with {device}')
@@ -53,7 +57,12 @@ def main(args):
     
     print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
 
-    guessr = cnn_guessr().to(device)
+    if args.full_padding:
+        pad = 'fullpad'
+        guessr = cnn_guessr_full_padding().to(device)
+    else:
+        pad = 'nopad'
+        guessr = cnn_guessr_no_padding().to(device)
     optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
     criterion = partial(distance_loss, R=1)
 
@@ -64,36 +73,30 @@ def main(args):
         valid_running_loss = eval_epoch(guessr, valid_loader, criterion, device, epoch)
         train_loss.append(train_running_loss)
         valid_loss.append(valid_running_loss)
+
+    if not osp.exists(args.out_dir):
+        os.makedirs(args.out_dir)
     
-    if args.save_model is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
-        torch.save(guessr.state_dict(), osp.join(args.save_model, f'CNNGuessr_epochs_{args.epochs}.pth'))
+    if args.save_model:
+        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'CNNGuessr_{pad}_epochs_{args.epochs}.pth'))
 
-    if args.plot_loss is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
-        plot_loss(args.plot_loss, train_loss, valid_loss, args.epochs)
+    plot_loss(args.out_dir, train_loss, valid_loss, args.full_padding, args.epochs)
 
-    if args.plot_map is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
+    guessr.eval()
+    ground_truth, prediction = [], []
 
-        guessr.eval()
-        ground_truth, prediction = [], []
+    with torch.no_grad():
+        for i, data in enumerate(valid_loader, 0):
+            image, coord = data
+            image, coord = Variable(image).to(device), Variable(coord).to(device)
+            output = guessr(image)
+            ground_truth.append(coord.cpu().numpy())
+            prediction.append(output.cpu().numpy())
+    
+    ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
 
-        with torch.no_grad():
-            for i, data in enumerate(valid_loader, 0):
-                image, coord = data
-                image, coord = Variable(image).to(device), Variable(coord).to(device)
-                output = guessr(image)
-                ground_truth.append(coord.cpu().numpy())
-                prediction.append(output.cpu().numpy())
-        
-        ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
-
-        plot_map(args.plot_map, ground_truth.copy(), prediction.copy(), args.epochs)
-        plot_stats(args.plot_map, ground_truth.copy(), prediction.copy(), args.epochs)
+    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), args.full_padding, args.epochs)
+    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), args.full_padding, args.epochs)
 
 
 if __name__ == '__main__':
@@ -102,15 +105,15 @@ if __name__ == '__main__':
     parser.add_argument('--img_h', type=int, default=128)
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--full_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--seed', type=int, default=977)
     parser.add_argument('--raw_data', action='store_true', default=False)
     parser.add_argument('--train_ratio', type=float, default=0.7)
-    parser.add_argument('--save_model', type=str, default=None)
-    parser.add_argument('--plot_loss', type=str, default=None)
-    parser.add_argument('--plot_map', type=str, default=None)
+    parser.add_argument('--out_dir', type=str, required=True)
+    parser.add_argument('--save_model', action='store_true', default=False)
 
     args = parser.parse_args()
 
