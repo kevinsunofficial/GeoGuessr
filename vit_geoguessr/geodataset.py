@@ -10,7 +10,7 @@ from torch.utils.data import Dataset
 
 
 class GeoDataset(Dataset):
-    def __init__(self, root_dir, img_w=256, img_h=128, label_name='coords_data.csv', transform=None):
+    def __init__(self, root_dir, img_w=256, img_h=128, label_name='coords_date.csv', transform=None):
         super().__init__()
         self.root_dir = root_dir
         self.images = np.load(osp.join(root_dir, f'images_{img_w}x{img_h}.npy'))

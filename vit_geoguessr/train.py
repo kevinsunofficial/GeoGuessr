@@ -65,35 +65,29 @@ def main(args):
         train_loss.append(train_running_loss)
         valid_loss.append(valid_running_loss)
     
-    if args.save_model is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
-        torch.save(guessr.state_dict(), osp.join(args.save_model, f'ViTGuessr_epochs_{args.epochs}.pth'))
+    if not osp.exists(args.out_dir):
+        os.makedirs(args.out_dir)
+    
+    if args.save_model:
+        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'ViTGuessr_depth{args.depth}_heads_{args.num_heads}_epochs_{args.epochs}.pth'))
 
-    if args.plot_loss is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
-        plot_loss(args.plot_loss, train_loss, valid_loss, args.epochs)
+    plot_loss(args.out_dir, train_loss, valid_loss, args.depth, args.num_heads, args.epochs)
 
-    if args.plot_map is not None:
-        if not osp.exists(args.save_model):
-            os.makedirs(args.save_model)
+    guessr.eval()
+    ground_truth, prediction = [], []
 
-        guessr.eval()
-        ground_truth, prediction = [], []
+    with torch.no_grad():
+        for i, data in enumerate(valid_loader, 0):
+            image, coord = data
+            image, coord = Variable(image).to(device), Variable(coord).to(device)
+            output = guessr(image)
+            ground_truth.append(coord.cpu().numpy())
+            prediction.append(output.cpu().numpy())
+    
+    ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
 
-        with torch.no_grad():
-            for i, data in enumerate(valid_loader, 0):
-                image, coord = data
-                image, coord = Variable(image).to(device), Variable(coord).to(device)
-                output = guessr(image)
-                ground_truth.append(coord.cpu().numpy())
-                prediction.append(output.cpu().numpy())
-        
-        ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
-
-        plot_map(args.plot_map, ground_truth.copy(), prediction.copy(), args.epochs)
-        plot_stats(args.plot_map, ground_truth.copy(), prediction.copy(), args.epochs)
+    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), args.depth, args.num_heads, args.epochs)
+    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), args.depth, args.num_heads, args.epochs)
 
 
 if __name__ == '__main__':
@@ -110,9 +104,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=977)
     parser.add_argument('--raw_data', action='store_true', default=False)
     parser.add_argument('--train_ratio', type=float, default=0.7)
-    parser.add_argument('--save_model', type=str, default=None)
-    parser.add_argument('--plot_loss', type=str, default=None)
-    parser.add_argument('--plot_map', type=str, default=None)
+    parser.add_argument('--out_dir', type=str, required=True)
+    parser.add_argument('--save_model', action='store_true', default=False)
 
     args = parser.parse_args()
 

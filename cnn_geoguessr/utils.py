@@ -118,7 +118,7 @@ def plot_stats(plot_dir, ground_truth, prediction, full_padding, epochs):
     })
 
     print(df)
-    df.to_csv(osp.join(plot_dir, f'distr_dist_epochs_{epochs}.csv'), header=True, index=False)
+    df.to_csv(osp.join(plot_dir, f'distr_dist_{pad}_epochs_{epochs}.csv'), header=True, index=False)
 
     plt.figure(figsize=(8, 5))
     plt.hist(distances, bins=250)

@@ -69,7 +69,7 @@ def eval_epoch(model, data_loader, criterion, device, epoch):
     return running_loss
 
 
-def plot_loss(plot_dir, train_loss, valid_loss, epochs):
+def plot_loss(plot_dir, train_loss, valid_loss, depth, num_heads, epochs):
     plt.figure(figsize=(8, 5))
     plt.plot(train_loss, label='training loss')
     plt.plot(valid_loss, label='validation loss')
@@ -78,11 +78,11 @@ def plot_loss(plot_dir, train_loss, valid_loss, epochs):
     plt.ylabel('Standardized distance loss')
     plt.title(f'Training stats with {epochs} epochs')
 
-    plt.savefig(osp.join(plot_dir, f'loss_epochs_{epochs}.png'))
+    plt.savefig(osp.join(plot_dir, f'loss_depth{depth}_heads_{num_heads}_epochs_{epochs}.png'))
     plt.clf()
 
 
-def plot_map(plot_dir, ground_truth, prediction, epochs):
+def plot_map(plot_dir, ground_truth, prediction, depth, num_heads, epochs):
     mult = np.array([90, 180])
     ground_truth_real, prediction_real = ground_truth.copy() * mult, prediction.copy() * mult
 
@@ -96,11 +96,11 @@ def plot_map(plot_dir, ground_truth, prediction, epochs):
     plt.ylabel('Latitude')
     plt.title(f'Validation map with {epochs} epochs')
 
-    plt.savefig(osp.join(plot_dir, f'valid_map_epochs_{epochs}.png'))
+    plt.savefig(osp.join(plot_dir, f'valid_map_depth{depth}_heads_{num_heads}_epochs_{epochs}.png'))
     plt.clf()
 
 
-def plot_stats(plot_dir, ground_truth, prediction, epochs):
+def plot_stats(plot_dir, ground_truth, prediction, depth, num_heads, epochs):
     distances = geo_distance(ground_truth.copy(), prediction.copy(), std=True)
     n = distances.size
 
@@ -116,7 +116,7 @@ def plot_stats(plot_dir, ground_truth, prediction, epochs):
     })
 
     print(df)
-    df.to_csv(osp.join(plot_dir, f'distr_dist_epochs_{epochs}.csv'), header=True, index=False)
+    df.to_csv(osp.join(plot_dir, f'distr_dist_depth{depth}_heads_{num_heads}_epochs_{epochs}.csv'), header=True, index=False)
 
     plt.figure(figsize=(8, 5))
     plt.hist(distances, bins=250)
@@ -124,5 +124,5 @@ def plot_stats(plot_dir, ground_truth, prediction, epochs):
     plt.ylabel('Count')
     plt.title(f'Error distances (km) with {epochs} epochs')
 
-    plt.savefig(osp.join(plot_dir, f'distr_dist_epochs_{epochs}.png'))
+    plt.savefig(osp.join(plot_dir, f'distr_dist_depth{depth}_heads_{num_heads}_epochs_{epochs}.png'))
     plt.clf()
