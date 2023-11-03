@@ -8,6 +8,6 @@
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --full_padding --epochs 100 --out_dir ./results/fullpad/ --save_model
+    --full_padding --epochs 100 --out_dir ./results/fullpad_100/ --save_model
 
 conda deactivate
