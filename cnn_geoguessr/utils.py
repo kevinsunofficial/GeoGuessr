@@ -122,6 +122,7 @@ def plot_stats(plot_dir, ground_truth, prediction, full_padding, epochs):
     })
 
     print(df)
+    pad = 'fullpad' if full_padding else 'nopad'
     df.to_csv(osp.join(plot_dir, f'distr_dist_{pad}_epochs_{epochs}.csv'), header=True, index=False)
 
     plt.figure(figsize=(8, 5))
@@ -130,6 +131,5 @@ def plot_stats(plot_dir, ground_truth, prediction, full_padding, epochs):
     plt.ylabel('Count')
     plt.title(f'Error distances (km) with {epochs} epochs')
 
-    pad = 'fullpad' if full_padding else 'nopad'
     plt.savefig(osp.join(plot_dir, f'distr_dist_{pad}_epochs_{epochs}.png'))
     plt.clf()
