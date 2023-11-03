@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lf02>
-Subject: Job 1158201: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lu04>
+Subject: Job 1164835: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov  2 02:32:27 2023
-Job was executed on host(s) <2*lf02>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov  2 02:32:33 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov  2 12:30:14 2023
+Job was executed on host(s) <2*lu04>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov  2 12:34:09 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Thu Nov  2 02:32:33 2023
-Terminated at Thu Nov  2 09:10:07 2023
-Results reported at Thu Nov  2 09:10:07 2023
+Started at Thu Nov  2 12:34:09 2023
+Terminated at Fri Nov  3 00:42:01 2023
+Results reported at Fri Nov  3 00:42:01 2023
 
 Your job looked like:
 
@@ -33,27 +33,27 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   67431.00 sec.
-    Max Memory :                                 72 GB
-    Average Memory :                             71.82 GB
+    CPU time :                                   114740.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.91 GB
     Total Requested Memory :                     256.00 GB
-    Delta Memory :                               184.00 GB
+    Delta Memory :                               185.00 GB
     Max Swap :                                   -
     Max Processes :                              5
-    Max Threads :                                20
-    Run time :                                   23855 sec.
-    Turnaround time :                            23860 sec.
+    Max Threads :                                21
+    Run time :                                   43672 sec.
+    Turnaround time :                            43907 sec.
 
 The output (if any) follows:
 
 Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
        Range  Distances  Proportion
-0     Street          1    0.000000
-1       City         25    0.000588
-2     Region        250    0.058572
-3    Country        750    0.342671
-4  Continent       2500    0.743914
+0     Street          1    0.000018
+1       City         25    0.000534
+2     Region        250    0.057183
+3    Country        750    0.328869
+4  Continent       2500    0.741136
 
 
 PS:
