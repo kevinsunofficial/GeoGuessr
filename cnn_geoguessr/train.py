@@ -64,7 +64,7 @@ def main(args):
         pad = 'nopad'
         guessr = cnn_guessr_no_padding().to(device)
     optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
-    criterion = partial(distance_loss, R=1)
+    criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
 
@@ -105,6 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--img_h', type=int, default=128)
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--full_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')

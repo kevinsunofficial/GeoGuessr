@@ -55,7 +55,7 @@ def main(args):
 
     guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
     optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
-    criterion = partial(distance_loss, R=1)
+    criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
 
@@ -98,6 +98,7 @@ if __name__ == '__main__':
     parser.add_argument('--depth', type=int, default=12)
     parser.add_argument('--num_heads', type=int, default=12)
     parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
     parser.add_argument('--epochs', type=int, default=200)
