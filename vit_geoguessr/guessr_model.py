@@ -157,7 +157,7 @@ class ViTGeoGuessr(nn.Module):
     
     def forward(self, x):
         x = self.forward_features(x)
-        x = self.head(x)
+        x = torch.tanh(self.head(x))
         
         return x
 
