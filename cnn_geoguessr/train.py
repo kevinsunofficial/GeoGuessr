@@ -15,7 +15,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 
 from geodataset import GeoDataset, rawGeoDataset
-from guessr_model import cnn_guessr_no_padding, cnn_guessr_full_padding
+from guessr_model import cnn_guessr_baseline, cnn_guessr_panorama_padding
 from utils import distance_loss, train_epoch, eval_epoch, plot_loss, plot_map, plot_stats
 
 
@@ -57,12 +57,12 @@ def main(args):
     
     print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
 
-    if args.full_padding:
-        pad = 'fullpad'
-        guessr = cnn_guessr_full_padding().to(device)
+    if args.panorama_padding:
+        pad = 'panorama_padding'
+        guessr = cnn_guessr_panorama_padding().to(device)
     else:
-        pad = 'nopad'
-        guessr = cnn_guessr_no_padding().to(device)
+        pad = 'baseline'
+        guessr = cnn_guessr_baseline().to(device)
     optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
     criterion = partial(distance_loss, R=args.radius)
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--radius', type=float, default=1.)
-    parser.add_argument('--full_padding', action='store_true', default=False)
+    parser.add_argument('--panorama_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
     parser.add_argument('--epochs', type=int, default=200)

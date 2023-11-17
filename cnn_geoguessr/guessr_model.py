@@ -9,7 +9,7 @@ from functools import partial
 
 class CNNGuessr(nn.Module):
     def __init__(self, img_w=256, img_h=128, in_c=3, padding=0, panorama_padding=0, panorama_padder=None, 
-                 conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.1):
+                 conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.3):
         super().__init__()
 
         self.img_size = (img_h, img_w)
@@ -84,15 +84,17 @@ def panorama_padder(x, pad_size):
     return x
 
 
-def cnn_guessr_no_padding():
-    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=0, panorama_padding=0, panorama_padder=None,
-                       conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.1)
-
+def cnn_guessr_baseline():
+    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=1, 
+                       panorama_padding=0, panorama_padder=None,
+                       conv_out=16*4*8, hidden_classes=100, num_out=2)
+    
     return guessr
 
 
-def cnn_guessr_full_padding():
-    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=1, panorama_padding=1, panorama_padder=panorama_padder,
+def cnn_guessr_panorama_padding():
+    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=1, 
+                       panorama_padding=1, panorama_padder=panorama_padder,
                        conv_out=16*4*9, hidden_classes=100, num_out=2)
     
     return guessr
