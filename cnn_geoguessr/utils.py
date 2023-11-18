@@ -73,7 +73,7 @@ def eval_epoch(model, data_loader, criterion, device, epoch):
     return running_loss / num_data
 
 
-def plot_loss(plot_dir, train_loss, valid_loss, full_padding, epochs):
+def plot_loss(plot_dir, train_loss, valid_loss, pad, epochs):
     plt.figure(figsize=(8, 5))
     plt.plot(train_loss, label='training loss')
     plt.plot(valid_loss, label='validation loss')
@@ -82,12 +82,11 @@ def plot_loss(plot_dir, train_loss, valid_loss, full_padding, epochs):
     plt.ylabel('Standardized distance loss')
     plt.title(f'Training stats with {epochs} epochs')
 
-    pad = 'fullpad' if full_padding else 'nopad'
     plt.savefig(osp.join(plot_dir, f'loss_{pad}_epochs_{epochs}.png'))
     plt.clf()
 
 
-def plot_map(plot_dir, ground_truth, prediction, full_padding, epochs):
+def plot_map(plot_dir, ground_truth, prediction, pad, epochs):
     mult = np.array([90, 180])
     ground_truth_real, prediction_real = ground_truth.copy() * mult, prediction.copy() * mult
 
@@ -101,12 +100,11 @@ def plot_map(plot_dir, ground_truth, prediction, full_padding, epochs):
     plt.ylabel('Latitude')
     plt.title(f'Validation map with {epochs} epochs')
 
-    pad = 'fullpad' if full_padding else 'nopad'
     plt.savefig(osp.join(plot_dir, f'valid_map_{pad}_epochs_{epochs}.png'))
     plt.clf()
 
 
-def plot_stats(plot_dir, ground_truth, prediction, full_padding, epochs):
+def plot_stats(plot_dir, ground_truth, prediction, pad, epochs):
     distances = geo_distance(ground_truth.copy(), prediction.copy(), std=True)
     n = distances.size
 
@@ -122,7 +120,6 @@ def plot_stats(plot_dir, ground_truth, prediction, full_padding, epochs):
     })
 
     print(df)
-    pad = 'fullpad' if full_padding else 'nopad'
     df.to_csv(osp.join(plot_dir, f'distr_dist_{pad}_epochs_{epochs}.csv'), header=True, index=False)
 
     plt.figure(figsize=(8, 5))

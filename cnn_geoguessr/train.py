@@ -80,7 +80,7 @@ def main(args):
     if args.save_model:
         torch.save(guessr.state_dict(), osp.join(args.out_dir, f'CNNGuessr_{pad}_epochs_{args.epochs}.pth'))
 
-    plot_loss(args.out_dir, train_loss, valid_loss, args.full_padding, args.epochs)
+    plot_loss(args.out_dir, train_loss, valid_loss, pad, args.epochs)
 
     guessr.eval()
     ground_truth, prediction = [], []
@@ -95,8 +95,8 @@ def main(args):
     
     ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
 
-    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), args.full_padding, args.epochs)
-    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), args.full_padding, args.epochs)
+    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), pad, args.epochs)
+    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), pad, args.epochs)
 
 
 if __name__ == '__main__':
