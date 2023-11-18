@@ -131,13 +131,18 @@ class ViTGeoGuessr(nn.Module):
             self.num_features = representation_size
             self.pre_logits = nn.Sequential(OrderedDict([
                 ('fc', nn.Linear(embed_dim, representation_size)),
-                ('act', nn.Tanh())
+                # ('act', nn.Tanh())
             ]))
         else:
             self.has_logits = False
             self.pre_logits = nn.Identity()
         
-        self.head = nn.Linear(self.num_features, num_classes) if num_classes else nn.Identity()
+        # self.head = nn.Linear(self.num_features, num_classes) if num_classes else nn.Identity()
+        self.head = nn.Sequential(
+            nn.Linear(self.num_features, 100),
+            nn.ReLU(),
+            nn.Linear(100, num_classes)
+        ) if num_classes else nn.Identity()
         
         nn.init.trunc_normal_(self.pos_embed, std=0.02)
         nn.init.trunc_normal_(self.cls_token, std=0.02)
