@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lf02>
-Subject: Job 1879255: <vitguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@ln05>
+Subject: Job 1910699: <vitguessr> in cluster <lila> Done
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Fri Nov 17 14:29:16 2023
-Job was executed on host(s) <2*lf02>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Fri Nov 17 14:58:25 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sat Nov 18 15:47:29 2023
+Job was executed on host(s) <2*ln05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sat Nov 18 15:47:32 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Fri Nov 17 14:58:25 2023
-Terminated at Fri Nov 17 23:13:09 2023
-Results reported at Fri Nov 17 23:13:09 2023
+Started at Sat Nov 18 15:47:32 2023
+Terminated at Sun Nov 19 00:13:28 2023
+Results reported at Sun Nov 19 00:13:28 2023
 
 Your job looked like:
 
@@ -33,16 +33,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   88782.00 sec.
+    CPU time :                                   90652.00 sec.
     Max Memory :                                 72 GB
-    Average Memory :                             71.80 GB
+    Average Memory :                             71.89 GB
     Total Requested Memory :                     256.00 GB
     Delta Memory :                               184.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                20
-    Run time :                                   29686 sec.
-    Turnaround time :                            31433 sec.
+    Run time :                                   30356 sec.
+    Turnaround time :                            30359 sec.
 
 The output (if any) follows:
 
@@ -50,10 +50,10 @@ Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000196
-2     Region        250    0.015493
-3    Country        750    0.094937
-4  Continent       2500    0.318131
+1       City         25    0.000000
+2     Region        250    0.000000
+3    Country        750    0.000000
+4  Continent       2500    0.004238
 
 
 PS:
