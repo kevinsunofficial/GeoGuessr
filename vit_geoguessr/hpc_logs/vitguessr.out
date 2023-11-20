@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@ln05>
-Subject: Job 1910699: <vitguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@ln01>
+Subject: Job 1964929: <vitguessr> in cluster <lila> Done
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sat Nov 18 15:47:29 2023
-Job was executed on host(s) <2*ln05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sat Nov 18 15:47:32 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sun Nov 19 18:22:04 2023
+Job was executed on host(s) <2*ln01>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sun Nov 19 18:22:07 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Sat Nov 18 15:47:32 2023
-Terminated at Sun Nov 19 00:13:28 2023
-Results reported at Sun Nov 19 00:13:28 2023
+Started at Sun Nov 19 18:22:07 2023
+Terminated at Mon Nov 20 02:39:00 2023
+Results reported at Mon Nov 20 02:39:00 2023
 
 Your job looked like:
 
@@ -33,7 +33,7 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   90652.00 sec.
+    CPU time :                                   88833.00 sec.
     Max Memory :                                 72 GB
     Average Memory :                             71.89 GB
     Total Requested Memory :                     256.00 GB
@@ -41,8 +41,8 @@ Resource usage summary:
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                20
-    Run time :                                   30356 sec.
-    Turnaround time :                            30359 sec.
+    Run time :                                   29815 sec.
+    Turnaround time :                            29816 sec.
 
 The output (if any) follows:
 
@@ -51,9 +51,9 @@ dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 561
        Range  Distances  Proportion
 0     Street          1    0.000000
 1       City         25    0.000000
-2     Region        250    0.000000
-3    Country        750    0.000000
-4  Continent       2500    0.004238
+2     Region        250    0.009937
+3    Country        750    0.066996
+4  Continent       2500    0.281802
 
 
 PS:
