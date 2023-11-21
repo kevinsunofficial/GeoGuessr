@@ -63,7 +63,8 @@ def main(args):
     else:
         pad = 'baseline'
         guessr = cnn_guessr_baseline().to(device)
-    optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
+    # optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
+    optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-5)
     criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
@@ -104,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
     parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--lr', type=float, default=0.0005)
     parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--panorama_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
