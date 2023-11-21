@@ -99,12 +99,12 @@ class Block(nn.Module):
     
 
 class ViTGeoGuessr(nn.Module):
-    def __init__(self, img_w=256, img_h=128, patch_size=16, in_c=3, num_classes=2, embed_dim=768, 
-                 depth=12, num_heads=12, mlp_ratio=4., qkv_bias=True, qk_scale=None, representation_size=None, 
+    def __init__(self, img_w=256, img_h=128, patch_size=16, in_c=3, embed_dim=768, 
+                 depth=12, num_heads=12, mlp_ratio=4., qkv_bias=True, qk_scale=None, 
                  drop_ratio=0., attn_drop_ratio=0., drop_path_ratio=0., 
                  embed_layer=PatchEmbed, norm_layer=None, act_layer=None):
         super(ViTGeoGuessr, self).__init__()
-        self.num_classes = num_classes
+        self.num_classes = 2
         self.num_features = self.embed_dim = embed_dim
         self.num_tokens = 1
         norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6)
@@ -126,23 +126,7 @@ class ViTGeoGuessr(nn.Module):
         ])
         self.norm = norm_layer(embed_dim)
         
-        if representation_size:
-            self.has_logits = True
-            self.num_features = representation_size
-            self.pre_logits = nn.Sequential(OrderedDict([
-                ('fc', nn.Linear(embed_dim, representation_size)),
-                ('act', nn.Tanh())
-            ]))
-        else:
-            self.has_logits = False
-            self.pre_logits = nn.Identity()
-        
-        # self.head = nn.Linear(self.num_features, num_classes) if num_classes else nn.Identity()
-        self.head = nn.Sequential(
-            nn.Linear(self.num_features, 100),
-            nn.ReLU(),
-            nn.Linear(100, num_classes)
-        ) if num_classes else nn.Identity()
+        self.head = nn.Linear(self.num_features, self.num_classes)
         
         nn.init.trunc_normal_(self.pos_embed, std=0.02)
         nn.init.trunc_normal_(self.cls_token, std=0.02)
@@ -158,7 +142,7 @@ class ViTGeoGuessr(nn.Module):
         x = self.blocks(x)
         x = self.norm(x)
         
-        return self.pre_logits(x[:, 0])
+        return x[:, 0]
     
     def forward(self, x):
         x = self.forward_features(x)
@@ -181,8 +165,9 @@ def _init_vit_weights(m):
         nn.init.ones_(m.weight)
 
 
-def vit_guessr(depth=12, num_heads=12, num_classes=2, has_logits=True):
-    guessr = ViTGeoGuessr(img_w=256, img_h=128, patch_size=16, embed_dim=768, depth=depth, num_heads=num_heads, 
-                          representation_size=768 if has_logits else None, num_classes=num_classes)
+def vit_guessr(depth=12, num_heads=12):
+    guessr = ViTGeoGuessr(img_w=256, img_h=128, patch_size=16, embed_dim=768, 
+                          depth=depth, num_heads=num_heads,
+                          drop_ratio=.1, attn_drop_ratio=.1, drop_path_ratio=.1)
     
     return guessr

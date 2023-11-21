@@ -54,7 +54,8 @@ def main(args):
     print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
 
     guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
-    optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
+    # optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
+    optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
     criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
@@ -97,11 +98,11 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--depth', type=int, default=12)
     parser.add_argument('--num_heads', type=int, default=12)
-    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--lr', type=float, default=0.0003)
     parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
-    parser.add_argument('--epochs', type=int, default=200)
+    parser.add_argument('--epochs', type=int, default=50)
     parser.add_argument('--seed', type=int, default=977)
     parser.add_argument('--raw_data', action='store_true', default=False)
     parser.add_argument('--train_ratio', type=float, default=0.7)
