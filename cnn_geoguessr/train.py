@@ -109,7 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('--panorama_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
-    parser.add_argument('--epochs', type=int, default=200)
+    parser.add_argument('--epochs', type=int, default=100)
     parser.add_argument('--seed', type=int, default=977)
     parser.add_argument('--raw_data', action='store_true', default=False)
     parser.add_argument('--train_ratio', type=float, default=0.7)
