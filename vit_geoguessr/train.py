@@ -54,8 +54,16 @@ def main(args):
     print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
 
     guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
-    # optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
-    optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
+
+    numparams = sum(param.numel() for param in guessr.parameters())
+    print(f'Total trainable parameters: {numparams}')
+
+    if args.optimizer == 'Adam':
+        optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
+    elif args.optimizer == 'SGD':
+        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
+
+    mode = f'depth{args.depth}_heads{args.num_heads}_{args.optimizer}{args.lr}'
     criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
@@ -70,9 +78,9 @@ def main(args):
         os.makedirs(args.out_dir)
     
     if args.save_model:
-        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'ViTGuessr_depth{args.depth}_heads_{args.num_heads}_epochs_{args.epochs}.pth'))
+        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'ViTGuessr_{mode}_epochs_{args.epochs}.pth'))
 
-    plot_loss(args.out_dir, train_loss, valid_loss, args.depth, args.num_heads, args.epochs)
+    plot_loss(args.out_dir, train_loss, valid_loss, mode, args.epochs)
 
     guessr.eval()
     ground_truth, prediction = [], []
@@ -87,8 +95,8 @@ def main(args):
     
     ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
 
-    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), args.depth, args.num_heads, args.epochs)
-    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), args.depth, args.num_heads, args.epochs)
+    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), mode, args.epochs)
+    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), mode, args.epochs)
 
 
 if __name__ == '__main__':
@@ -98,7 +106,8 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--depth', type=int, default=12)
     parser.add_argument('--num_heads', type=int, default=12)
-    parser.add_argument('--lr', type=float, default=0.0003)
+    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--optimizer', type=str, default='Adam')
     parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')

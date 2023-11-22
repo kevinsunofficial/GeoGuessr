@@ -70,7 +70,7 @@ def main(args):
     elif args.optimizer == 'SGD':
         optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
 
-    mode = f'{args.model}_{args.optimizer}{args.lr}'    
+    mode = f'{args.model}_{args.optimizer}{args.lr}'
     criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []

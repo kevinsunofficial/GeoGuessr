@@ -101,7 +101,7 @@ class Block(nn.Module):
 class ViTGeoGuessr(nn.Module):
     def __init__(self, img_w=256, img_h=128, patch_size=16, in_c=3, embed_dim=768, 
                  depth=12, num_heads=12, mlp_ratio=4., qkv_bias=True, qk_scale=None, 
-                 drop_ratio=0., attn_drop_ratio=0., drop_path_ratio=0., 
+                 drop_ratio=0., attn_drop_ratio=0., drop_path_ratio=0., init_weight=False, 
                  embed_layer=PatchEmbed, norm_layer=None, act_layer=None):
         super(ViTGeoGuessr, self).__init__()
         self.num_classes = 2
@@ -128,9 +128,10 @@ class ViTGeoGuessr(nn.Module):
         
         self.head = nn.Linear(self.num_features, self.num_classes)
         
-        nn.init.trunc_normal_(self.pos_embed, std=0.02)
-        nn.init.trunc_normal_(self.cls_token, std=0.02)
-        self.apply(_init_vit_weights)
+        if init_weight:
+            nn.init.trunc_normal_(self.pos_embed, std=0.02)
+            nn.init.trunc_normal_(self.cls_token, std=0.02)
+            self.apply(_init_vit_weights)
     
     def forward_features(self, x):
         # x = B, C, H, W
@@ -167,7 +168,7 @@ def _init_vit_weights(m):
 
 def vit_guessr(depth=12, num_heads=12):
     guessr = ViTGeoGuessr(img_w=256, img_h=128, patch_size=16, embed_dim=768, 
-                          depth=depth, num_heads=num_heads,
-                          drop_ratio=.1, attn_drop_ratio=.1, drop_path_ratio=.1)
+                          depth=depth, num_heads=num_heads, init_weight=False,
+                          drop_ratio=.3, attn_drop_ratio=.3, drop_path_ratio=.3)
     
     return guessr
