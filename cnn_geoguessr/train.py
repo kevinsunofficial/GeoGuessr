@@ -57,14 +57,20 @@ def main(args):
     
     print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
 
-    if args.panorama_padding:
-        pad = 'panorama_padding'
-        guessr = cnn_guessr_panorama_padding().to(device)
-    else:
-        pad = 'baseline'
+    if args.model == 'baseline':
         guessr = cnn_guessr_baseline().to(device)
-    # optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
-    optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-5)
+    elif args.model == 'panorama_padding':
+        guessr = cnn_guessr_panorama_padding().to(device)
+
+    numparams = sum(param.numel() for param in guessr.parameters())
+    print(f'Total trainable parameters: {numparams}')
+    
+    if args.optimizer == 'Adam':
+        optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
+    elif args.optimizer == 'SGD':
+        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
+
+    mode = f'{args.model}_{args.optimizer}{args.lr}'    
     criterion = partial(distance_loss, R=args.radius)
 
     train_loss, valid_loss = [], []
@@ -79,9 +85,9 @@ def main(args):
         os.makedirs(args.out_dir)
     
     if args.save_model:
-        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'CNNGuessr_{pad}_epochs_{args.epochs}.pth'))
+        torch.save(guessr.state_dict(), osp.join(args.out_dir, f'CNNGuessr_{mode}_epochs_{args.epochs}.pth'))
 
-    plot_loss(args.out_dir, train_loss, valid_loss, pad, args.epochs)
+    plot_loss(args.out_dir, train_loss, valid_loss, mode, args.epochs)
 
     guessr.eval()
     ground_truth, prediction = [], []
@@ -96,8 +102,8 @@ def main(args):
     
     ground_truth, prediction = np.concatenate(ground_truth), np.concatenate(prediction)
 
-    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), pad, args.epochs)
-    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), pad, args.epochs)
+    plot_map(args.out_dir, ground_truth.copy(), prediction.copy(), mode, args.epochs)
+    plot_stats(args.out_dir, ground_truth.copy(), prediction.copy(), mode, args.epochs)
 
 
 if __name__ == '__main__':
@@ -105,9 +111,11 @@ if __name__ == '__main__':
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
     parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--lr', type=float, default=0.0005)
+    parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--radius', type=float, default=1.)
-    parser.add_argument('--panorama_padding', action='store_true', default=False)
+    parser.add_argument('--model', type=str, default='baseline')
+    parser.add_argument('--optimizer', type=str, default='Adam')
+    # parser.add_argument('--panorama_padding', action='store_true', default=False)
     parser.add_argument('--root_dir', type=str, required=True)
     parser.add_argument('--label_name', type=str, default='coords_date.csv')
     parser.add_argument('--epochs', type=int, default=100)

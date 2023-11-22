@@ -8,6 +8,7 @@
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --epochs 150 --out_dir ./results/baseline_150/ --save_model
+    --epochs 250 --lr 5e-4 --batch_size 64 \
+    --out_dir ./results/baseline_250/ --save_model
 
 conda deactivate
