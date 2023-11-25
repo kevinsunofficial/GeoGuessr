@@ -36,7 +36,7 @@ def main(args):
     if args.augment:
         img_transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.RandomResizedCrop(size=(args.img_h, args.img_w), antialias=True),
+            transforms.RandomResizedCrop(size=(args.img_h, args.img_w)),
             transforms.RandomPhotometricDistort(),
             transforms.RandomHorizontalFlip(),
             transforms.ToDtype(torch.float32, scale=True),
