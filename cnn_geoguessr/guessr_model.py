@@ -1,97 +1,85 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from functools import partial
 
 
 class CNNGuessr(nn.Module):
-    def __init__(self, img_w=256, img_h=128, in_c=3, padding=0, panorama_padding=0, panorama_padder=None, 
-                 conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.5):
-        super().__init__()
+    def __init__(self, conv, conv_out, hidden_classes, drop_ratio=0.5, 
+                 img_w=256, img_h=128, in_c=3, padding=1, init_weight=False):
+        super(CNNGuessr, self).__init__()
 
         self.img_size = (img_h, img_w)
-        self.padding = padding
-        self.panorama_padding = panorama_padding
-        self.panorama_padder = panorama_padder
-        self.conv_out = conv_out
-        if self.panorama_padding:
-            assert self.panorama_padder is not None, \
-                f'panorama_padding: {self.panorama_padding}, but have no panorama padder.'
-            self.panorama_padder = partial(panorama_padder, pad_size=self.panorama_padding)
-        else:
-            self.panorama_padder = nn.Identity()
+        self.conv = conv
+        self.fc = nn.Sequential(
+            nn.Linear(conv_out, hidden_classes),
+            nn.ReLU(True),
+            nn.Dropout(drop_ratio),
+            nn.Linear(hidden_classes, hidden_classes),
+            nn.ReLU(True),
+            nn.Dropout(drop_ratio),
+            nn.Linear(hidden_classes, 2)
+        )
 
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(in_c, 32, 3, padding=self.padding),
-            nn.ReLU(),
-            nn.BatchNorm2d(32),
-            nn.MaxPool2d(2, 2)
-        )
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 64, 3, padding=self.padding),
-            nn.ReLU(),
-            nn.BatchNorm2d(64),
-            nn.MaxPool2d(2, 2)
-        )
-        self.conv3 = nn.Sequential(
-            nn.Conv2d(64, 64, 3, padding=self.padding),
-            nn.ReLU(),
-            nn.BatchNorm2d(64),
-            nn.MaxPool2d(2, 2)
-        )
-        self.conv4 = nn.Sequential(
-            nn.Conv2d(64, 32, 3, padding=self.padding),
-            nn.ReLU(),
-            nn.BatchNorm2d(32),
-            nn.MaxPool2d(2, 2)
-        )
-        self.conv5 = nn.Sequential(
-            nn.Conv2d(32, 16, 3, padding=self.padding),
-            nn.ReLU(),
-            nn.BatchNorm2d(16),
-            nn.MaxPool2d(2, 2)
-        )
-        self.drop = nn.Dropout(drop_ratio)
-        self.fc1 = nn.Linear(self.conv_out, hidden_classes)
-        self.fc2 = nn.Linear(hidden_classes, num_out)
+        if init_weight:
+            self.apply(_init_cnn_weights)
 
     def forward(self, x):
         B, C, H, W = x.shape
         assert H==self.img_size[0] and W==self.img_size[1], \
             f'Input image size ({H}, {W}) mismatch with model requirements {self.img_size}'
         
-        x = self.conv1(self.panorama_padder(x))
-        x = self.conv2(self.panorama_padder(x))
-        x = self.conv3(self.panorama_padder(x))
-        x = self.conv4(self.panorama_padder(x))
-        x = self.conv5(self.panorama_padder(x))
-
+        x = self.conv(x)
         x = x.view(-1, self.conv_out)
-        x = F.relu(self.fc1(self.drop(x)))
-        x = torch.tanh(self.fc2(self.drop(x)))
+        x = torch.tanh(self.fc(x))
 
         return x
-
-
-def panorama_padder(x, pad_size):
-    left_pad = x[:, :, :, -pad_size:]
-    right_pad = x[:, :, :, :pad_size]
-    x = torch.cat((left_pad, x, right_pad), dim=3)
-
-    return x
-
-
-def cnn_guessr_baseline():
-    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=1, 
-                       panorama_padding=0, panorama_padder=None,
-                       conv_out=16*4*8, hidden_classes=100, num_out=2)
     
-    return guessr
+
+LAYER_STRUCTURE = {
+    'baseline': [32, 'M', 64, 'M', 64, 'M', 32, 'M', 16, 'M'],
+    'vgg16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
+}
+
+CONV_OUT_DIM = {
+    'baseline': 16 * 4 * 8,
+    'vgg16': 512 * 4 * 8,
+}
+
+HIDDEN_DIM = {
+    'baseline': 100,
+    'vgg16': 4096
+}
 
 
-def cnn_guessr_panorama_padding():
-    guessr = CNNGuessr(img_w=256, img_h=128, in_c=3, padding=1, 
-                       panorama_padding=1, panorama_padder=panorama_padder,
-                       conv_out=16*4*9, hidden_classes=100, num_out=2)
+def _init_cnn_weights(m):
+    if isinstance(m, nn.Linear):
+        nn.init.xavier_uniform_(m.weight)
+        if m.bias is not None:
+            nn.init.zeros_(m.bias)
+    elif isinstance(m, nn.Conv2d):
+        nn.init.xavier_uniform_(m.weight)
+        if m.bias is not None:
+            nn.init.zeros_(m.bias)
+
+
+def make_layers(layer_params, in_c=3):
+    layers = []
+    in_c = in_c
+    for param in layer_params:
+        if param == 'M':
+            layers.append(nn.MaxPool2d(2, 2))
+        else:
+            layers.append(nn.Conv2d(in_c, param, 3, padding=1))
+            layers.append(nn.ReLU(True))
+            in_c = param
     
+    return nn.Sequential(*layers)
+
+
+def cnn_guessr(model):
+    assert model in LAYER_STRUCTURE, f'Model {model} not in preset'
+    
+    guessr = CNNGuessr(conv=make_layers(LAYER_STRUCTURE[model]), 
+                       conv_out=CONV_OUT_DIM[model], 
+                       hidden_classes=HIDDEN_DIM[model])
+
     return guessr
