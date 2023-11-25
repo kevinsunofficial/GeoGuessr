@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lt15>
-Subject: Job 2042592: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lx11>
+Subject: Job 2060611: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Nov 22 14:25:28 2023
-Job was executed on host(s) <2*lt15>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Nov 22 14:25:28 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Fri Nov 24 23:15:28 2023
+Job was executed on host(s) <2*lx11>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Fri Nov 24 23:16:33 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Wed Nov 22 14:25:28 2023
-Terminated at Thu Nov 23 11:12:07 2023
-Results reported at Thu Nov 23 11:12:07 2023
+Started at Fri Nov 24 23:16:33 2023
+Terminated at Sat Nov 25 11:17:22 2023
+Results reported at Sat Nov 25 11:17:22 2023
 
 Your job looked like:
 
@@ -23,8 +23,8 @@ Your job looked like:
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --epochs 250 --lr 5e-4 --batch_size 64 \
-    --out_dir ./results/baseline_250/ --save_model
+    --augment --epochs 150 --lr 1e-3 --batch_size 16 \
+    --out_dir ./results/baseline_150/ --save_model
 
 conda deactivate
 
@@ -34,16 +34,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   210991.00 sec.
-    Max Memory :                                 75 GB
-    Average Memory :                             69.96 GB
+    CPU time :                                   111018.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.91 GB
     Total Requested Memory :                     256.00 GB
-    Delta Memory :                               181.00 GB
+    Delta Memory :                               185.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   74799 sec.
-    Turnaround time :                            74799 sec.
+    Run time :                                   43250 sec.
+    Turnaround time :                            43314 sec.
 
 The output (if any) follows:
 
@@ -52,10 +52,10 @@ dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 561
 Total trainable parameters: 131326
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000463
-2     Region        250    0.051324
-3    Country        750    0.324114
-4  Continent       2500    0.737022
+1       City         25    0.000160
+2     Region        250    0.011914
+3    Country        750    0.093869
+4  Continent       2500    0.415935
 
 
 PS:
