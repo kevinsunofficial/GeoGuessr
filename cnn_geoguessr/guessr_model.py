@@ -9,6 +9,7 @@ class CNNGuessr(nn.Module):
 
         self.img_size = (img_h, img_w)
         self.conv = conv
+        self.conv_out = conv_out
         self.fc = nn.Sequential(
             nn.Linear(conv_out, hidden_classes),
             nn.ReLU(True),
