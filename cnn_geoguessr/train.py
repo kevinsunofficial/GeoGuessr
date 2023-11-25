@@ -3,15 +3,11 @@ import os.path as osp
 import argparse
 from functools import partial
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 
 import torch
 from torchvision import transforms
-from torchvision.transforms import v2
-from torch.utils.data import DataLoader, Dataset, random_split
-import torch.nn as nn
-import torch.nn.functional as F
+from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
 from torch.autograd import Variable
 
@@ -35,18 +31,18 @@ def main(args):
     print(f'Training with {device}')
     
     if args.augment:
-        img_transform = v2.Compose([
-            v2.ToTensor(),
-            v2.RandomResizedCrop(size=(args.img_h, args.img_w)),
-            v2.RandomPhotometricDistort(),
-            v2.RandomHorizontalFlip(),
-            v2.ToDtype(torch.float32, scale=True),
-            v2.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.RandomResizedCrop(size=(args.img_h, args.img_w)),
+            # transforms.v2.RandomPhotometricDistort(),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToDtype(torch.float32, scale=True),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
     else:
-        img_transform = v2.Compose([
-            v2.ToTensor(),
-            v2.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
         ])
     
     if args.raw_data:
