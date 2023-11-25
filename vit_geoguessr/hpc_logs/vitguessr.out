@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@ln05>
-Subject: Job 2030521: <vitguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lt22>
+Subject: Job 2043160: <vitguessr> in cluster <lila> Done
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Nov 21 18:08:16 2023
-Job was executed on host(s) <2*ln05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Nov 21 20:38:28 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Nov 22 17:04:06 2023
+Job was executed on host(s) <2*lt22>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Nov 22 17:04:07 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Tue Nov 21 20:38:28 2023
-Terminated at Wed Nov 22 05:53:59 2023
-Results reported at Wed Nov 22 05:53:59 2023
+Started at Wed Nov 22 17:04:07 2023
+Terminated at Fri Nov 24 04:44:46 2023
+Results reported at Fri Nov 24 04:44:46 2023
 
 Your job looked like:
 
@@ -19,11 +19,17 @@ Your job looked like:
 #BSUB -oo hpc_logs/vitguessr.out
 #BSUB -eo hpc_logs/vitguessr.err
 
+depth=8
+numheads=8
+epoch=100
+optim="Adam"
 
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --epochs 50 --out_dir ./results/ --save_model
+    --depth $depth --num_heads $numheads --lr 1e-4 --optimizer $optim \
+    --epochs $epoch --out_dir "./results/d${depth}h${numheads}_${epoch}/" \
+    --save_model
 
 conda deactivate
 
@@ -33,27 +39,28 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   99698.00 sec.
-    Max Memory :                                 72 GB
-    Average Memory :                             71.89 GB
+    CPU time :                                   342698.00 sec.
+    Max Memory :                                 70 GB
+    Average Memory :                             69.98 GB
     Total Requested Memory :                     256.00 GB
-    Delta Memory :                               184.00 GB
+    Delta Memory :                               186.00 GB
     Max Swap :                                   -
     Max Processes :                              5
-    Max Threads :                                20
-    Run time :                                   33332 sec.
-    Turnaround time :                            42343 sec.
+    Max Threads :                                21
+    Run time :                                   128440 sec.
+    Turnaround time :                            128440 sec.
 
 The output (if any) follows:
 
 Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
+Total trainable parameters: 57396482
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000071
-2     Region        250    0.007854
-3    Country        750    0.062953
-4  Continent       2500    0.274732
+1       City         25    0.000196
+2     Region        250    0.015422
+3    Country        750    0.132958
+4  Continent       2500    0.479155
 
 
 PS:
