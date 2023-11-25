@@ -1,5 +1,6 @@
 import os
 import os.path as osp
+import math
 import argparse
 from functools import partial
 import numpy as np
@@ -12,6 +13,7 @@ from torch.utils.data import DataLoader, Dataset, random_split
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torch.optim.lr_scheduler as lr_scheduler
 from torch.autograd import Variable
 
 from geodataset import GeoDataset, rawGeoDataset
@@ -29,10 +31,20 @@ def main(args):
 
     print(f'Training with {device}')
     
-    img_transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-    ])
+    if args.augment:
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.RandomResizedCrop(size=(args.img_h, args.img_w), antialias=True),
+            transforms.RandomPhotometricDistort(),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToDtype(torch.float32, scale=True),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+    else:
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+        ])
     
     if args.raw_data:
         geo_dataset = rawGeoDataset(args.root_dir, args.img_w, args.img_h, args.label_name, img_transform)
@@ -63,6 +75,9 @@ def main(args):
     elif args.optimizer == 'SGD':
         optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
 
+    lf = lambda x: ((1 + math.cos(x * math.pi / args.epochs)) / 2) * (1 - args.lrf) + args.lrf
+    scheduler = lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
+
     mode = f'depth{args.depth}_heads{args.num_heads}_{args.optimizer}{args.lr}'
     criterion = partial(distance_loss, R=args.radius)
 
@@ -70,7 +85,9 @@ def main(args):
 
     for epoch in tqdm(range(args.epochs)):
         train_running_loss = train_epoch(guessr, optimizer, train_loader, criterion, device, epoch)
+        scheduler.step()
         valid_running_loss = eval_epoch(guessr, valid_loader, criterion, device, epoch)
+
         train_loss.append(train_running_loss)
         valid_loss.append(valid_running_loss)
     
@@ -103,10 +120,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
-    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--augment', action='store_true', default=False)
+    parser.add_argument('--batch_size', type=int, default=8)
     parser.add_argument('--depth', type=int, default=12)
     parser.add_argument('--num_heads', type=int, default=12)
     parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--lrf', type=float, default=0.01)
     parser.add_argument('--optimizer', type=str, default='Adam')
     parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--root_dir', type=str, required=True)

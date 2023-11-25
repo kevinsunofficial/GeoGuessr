@@ -33,10 +33,20 @@ def main(args):
 
     print(f'Training with {device}')
     
-    img_transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-    ])
+    if args.augment:
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.RandomResizedCrop(size=(args.img_h, args.img_w), antialias=True),
+            transforms.RandomPhotometricDistort(),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToDtype(torch.float32, scale=True),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+    else:
+        img_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+        ])
     
     if args.raw_data:
         geo_dataset = rawGeoDataset(args.root_dir, args.img_w, args.img_h, args.label_name, img_transform)
@@ -78,6 +88,7 @@ def main(args):
     for epoch in tqdm(range(args.epochs)):
         train_running_loss = train_epoch(guessr, optimizer, train_loader, criterion, device, epoch)
         valid_running_loss = eval_epoch(guessr, valid_loader, criterion, device, epoch)
+
         train_loss.append(train_running_loss)
         valid_loss.append(valid_running_loss)
 
@@ -110,6 +121,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
+    parser.add_argument('--augment', action='store_true', default=False)
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--radius', type=float, default=1.)

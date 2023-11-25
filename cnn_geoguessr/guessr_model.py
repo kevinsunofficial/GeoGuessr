@@ -9,7 +9,7 @@ from functools import partial
 
 class CNNGuessr(nn.Module):
     def __init__(self, img_w=256, img_h=128, in_c=3, padding=0, panorama_padding=0, panorama_padder=None, 
-                 conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.3):
+                 conv_out=16*2*6, hidden_classes=100, num_out=2, drop_ratio=0.5):
         super().__init__()
 
         self.img_size = (img_h, img_w)
