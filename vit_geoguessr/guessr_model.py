@@ -1,11 +1,6 @@
 import torch
-from torchvision import transforms
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.autograd import Variable
 from functools import partial
-from collections import OrderedDict
 
 
 class PatchEmbed(nn.Module):
