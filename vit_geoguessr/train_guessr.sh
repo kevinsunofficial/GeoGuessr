@@ -4,8 +4,8 @@
 #BSUB -oo hpc_logs/vitguessr.out
 #BSUB -eo hpc_logs/vitguessr.err
 
-depth=4
-numheads=4
+depth=12
+numheads=12
 epoch=100
 optim="Adam"
 lr="1e-4"
