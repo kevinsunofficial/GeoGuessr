@@ -4,7 +4,7 @@
 #BSUB -oo hpc_logs/cnnguessr.out
 #BSUB -eo hpc_logs/cnnguessr.err
 
-model="vgg16"
+model="baseline"
 epoch=100
 optim="Adam"
 lr="1e-3"

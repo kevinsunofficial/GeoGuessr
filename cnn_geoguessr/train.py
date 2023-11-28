@@ -64,12 +64,12 @@ def main(args):
     guessr = cnn_guessr(args.model).to(device)
 
     numparams = sum(param.numel() for param in guessr.parameters())
-    print(f'CNN Model {args.model} created, total trainable parameters: {numparams}')
+    print(f'CNN {args.model} model created, total trainable parameters: {numparams}')
     
     if args.optimizer == 'Adam':
-        optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
+        optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
     elif args.optimizer == 'SGD':
-        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
+        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9)
 
     mode = f'{args.model}_{args.optimizer}{args.lr}'
     criterion = partial(distance_loss, R=args.radius)
