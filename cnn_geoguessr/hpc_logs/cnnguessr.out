@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lt07>
-Subject: Job 2073443: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lx13>
+Subject: Job 2091665: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Mon Nov 27 01:24:50 2023
-Job was executed on host(s) <2*lt07>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Mon Nov 27 01:24:50 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Mon Nov 27 12:43:39 2023
+Job was executed on host(s) <2*lx13>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Mon Nov 27 12:43:39 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Mon Nov 27 01:24:50 2023
-Terminated at Mon Nov 27 11:20:43 2023
-Results reported at Mon Nov 27 11:20:43 2023
+Started at Mon Nov 27 12:43:39 2023
+Terminated at Mon Nov 27 20:00:24 2023
+Results reported at Mon Nov 27 20:00:24 2023
 
 Your job looked like:
 
@@ -28,8 +28,7 @@ batch=16
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --model $model --augment --epochs $epoch \
-    --optimizer $optim --lr $lr --batch_size $batch \
+    --model $model --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
     --out_dir "./results/${model}_b${batch}_${optim}${lr}_${epoch}/" \
     --save_model
 
@@ -41,16 +40,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   100947.00 sec.
-    Max Memory :                                 70 GB
-    Average Memory :                             69.89 GB
+    CPU time :                                   68175.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.84 GB
     Total Requested Memory :                     128.00 GB
-    Delta Memory :                               58.00 GB
+    Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   35754 sec.
-    Turnaround time :                            35753 sec.
+    Run time :                                   26205 sec.
+    Turnaround time :                            26205 sec.
 
 The output (if any) follows:
 
@@ -60,9 +59,9 @@ CNN Model baseline created, total trainable parameters: 141010
        Range  Distances  Proportion
 0     Street          1    0.000000
 1       City         25    0.000000
-2     Region        250    0.007640
-3    Country        750    0.062935
-4  Continent       2500    0.277100
+2     Region        250    0.009848
+3    Country        750    0.076274
+4  Continent       2500    0.288124
 
 
 PS:
