@@ -8,7 +8,7 @@ model="baseline"
 epoch=100
 optim="Adam"
 lr="1e-3"
-batch=16
+batch=32
 
 conda activate cuda111_torch
 

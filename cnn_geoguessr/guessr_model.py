@@ -4,17 +4,15 @@ import torch.nn as nn
 
 class CNNGuessr(nn.Module):
     def __init__(self, conv, conv_out, hidden_classes, drop_ratio=0.5, 
-                 img_w=256, img_h=128, in_c=3, padding=1, init_weight=False):
+                 img_w=256, img_h=128, init_weight=False):
         super(CNNGuessr, self).__init__()
 
         self.img_size = (img_h, img_w)
         self.conv = conv
         self.conv_out = conv_out
         self.fc = nn.Sequential(
-            nn.Linear(conv_out, hidden_classes),
-            nn.ReLU(True),
             nn.Dropout(drop_ratio),
-            nn.Linear(hidden_classes, hidden_classes),
+            nn.Linear(conv_out, hidden_classes),
             nn.ReLU(True),
             nn.Dropout(drop_ratio),
             nn.Linear(hidden_classes, 2)
@@ -71,6 +69,7 @@ def make_layers(layer_params, in_c=3):
         else:
             layers.append(nn.Conv2d(in_c, param, 3, padding=1))
             layers.append(nn.ReLU(True))
+            layers.append(nn.BatchNorm2d(param))
             in_c = param
     
     return nn.Sequential(*layers)
