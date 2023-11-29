@@ -1,0 +1,70 @@
+Sender: LSF System <lsfadmin@lt18>
+Subject: Job 2110345: <cnnguessr> in cluster <lila> Done
+
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Nov 28 13:14:15 2023
+Job was executed on host(s) <2*lt18>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Nov 28 13:14:15 2023
+</home/suny4> was used as the home directory.
+</home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
+Started at Tue Nov 28 13:14:15 2023
+Terminated at Tue Nov 28 21:32:57 2023
+Results reported at Tue Nov 28 21:32:57 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash -l
+
+#BSUB -J cnnguessr
+#BSUB -oo hpc_logs/cnnguessr_baseline.out
+#BSUB -eo hpc_logs/cnnguessr_baseline.err
+
+model="baseline"
+epoch=100
+optim="Adam"
+lr="1e-3"
+batch=32
+
+conda activate cuda111_torch
+
+python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
+    --model $model --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
+    --out_dir "./results/${model}_b${batch}_${optim}${lr}_${epoch}/" \
+    --save_model
+
+conda deactivate
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   83538.00 sec.
+    Max Memory :                                 70 GB
+    Average Memory :                             69.91 GB
+    Total Requested Memory :                     128.00 GB
+    Delta Memory :                               58.00 GB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                21
+    Run time :                                   29923 sec.
+    Turnaround time :                            29922 sec.
+
+The output (if any) follows:
+
+Training with cuda
+dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
+CNN baseline model created, total trainable parameters: 131326
+       Range  Distances  Proportion
+0     Street          1    0.000000
+1       City         25    0.000427
+2     Region        250    0.042420
+3    Country        750    0.291507
+4  Continent       2500    0.717718
+
+
+PS:
+
+Read file <hpc_logs/cnnguessr_baseline.err> for stderr output of this job.
+
