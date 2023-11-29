@@ -5,8 +5,8 @@
 #BSUB -eo hpc_logs/vitguessr.err
 
 depth=12
-numheads=12
-epoch=100
+numheads=8
+epoch=75
 optim="Adam"
 lr="1e-4"
 
