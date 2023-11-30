@@ -67,9 +67,9 @@ def main(args):
     print(f'CNN {args.model} model created, total trainable parameters: {numparams}')
     
     if args.optimizer == 'Adam':
-        optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
+        optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
     elif args.optimizer == 'SGD':
-        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9)
+        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
 
     mode = f'{args.model}_{args.optimizer}{args.lr}'
     criterion = partial(distance_loss, R=args.radius)
