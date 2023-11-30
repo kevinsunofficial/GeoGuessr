@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lt18>
-Subject: Job 2110345: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lt03>
+Subject: Job 2117202: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Nov 28 13:14:15 2023
-Job was executed on host(s) <2*lt18>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Nov 28 13:14:15 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Nov 29 00:58:49 2023
+Job was executed on host(s) <2*lt03>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Nov 29 00:58:49 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Tue Nov 28 13:14:15 2023
-Terminated at Tue Nov 28 21:32:57 2023
-Results reported at Tue Nov 28 21:32:57 2023
+Started at Wed Nov 29 00:58:49 2023
+Terminated at Thu Nov 30 01:13:06 2023
+Results reported at Thu Nov 30 01:13:06 2023
 
 Your job looked like:
 
@@ -20,16 +20,17 @@ Your job looked like:
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 
 model="baseline"
-epoch=100
+epoch=250
 optim="Adam"
-lr="1e-3"
-batch=32
+lr="5e-4"
+batch=16
+augment="aug"
 
 conda activate cuda111_torch
 
 python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
-    --model $model --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
-    --out_dir "./results/${model}_b${batch}_${optim}${lr}_${epoch}/" \
+    --model $model --augment --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
+    --out_dir "./results/${model}_${augment}_b${batch}_${optim}${lr}_${epoch}/" \
     --save_model
 
 conda deactivate
@@ -40,16 +41,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   83538.00 sec.
+    CPU time :                                   241845.00 sec.
     Max Memory :                                 70 GB
-    Average Memory :                             69.91 GB
+    Average Memory :                             69.95 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               58.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   29923 sec.
-    Turnaround time :                            29922 sec.
+    Run time :                                   87259 sec.
+    Turnaround time :                            87257 sec.
 
 The output (if any) follows:
 
@@ -58,10 +59,10 @@ dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 561
 CNN baseline model created, total trainable parameters: 131326
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000427
-2     Region        250    0.042420
-3    Country        750    0.291507
-4  Continent       2500    0.717718
+1       City         25    0.000516
+2     Region        250    0.045608
+3    Country        750    0.308550
+4  Continent       2500    0.730112
 
 
 PS:

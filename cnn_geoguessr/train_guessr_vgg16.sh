@@ -5,9 +5,9 @@
 #BSUB -eo hpc_logs/cnnguessr_vgg16.err
 
 model="vgg16"
-epoch=200
+epoch=100
 optim="Adam"
-lr="5e-4"
+lr="1e-3"
 batch=16
 
 conda activate cuda111_torch

@@ -1,0 +1,65 @@
+Sender: LSF System <lsfadmin@lx11>
+Subject: Job 2110347: <cnnguessr> in cluster <lila> Exited
+
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Nov 28 13:14:30 2023
+Job was executed on host(s) <2*lx11>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Nov 28 13:14:31 2023
+</home/suny4> was used as the home directory.
+</home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
+Started at Tue Nov 28 13:14:31 2023
+Terminated at Thu Nov 30 13:14:36 2023
+Results reported at Thu Nov 30 13:14:36 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash -l
+
+#BSUB -J cnnguessr
+#BSUB -oo hpc_logs/cnnguessr_vgg16.out
+#BSUB -eo hpc_logs/cnnguessr_vgg16.err
+
+model="vgg16"
+epoch=200
+optim="Adam"
+lr="5e-4"
+batch=16
+
+conda activate cuda111_torch
+
+python train.py --root_dir /data/leslie/suny4/geo/world_panorama/ \
+    --model $model --augment --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
+    --out_dir "./results/${model}_b${batch}_${optim}${lr}_${epoch}/" \
+    --save_model
+
+conda deactivate
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   344350.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.97 GB
+    Total Requested Memory :                     128.00 GB
+    Delta Memory :                               57.00 GB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                21
+    Run time :                                   172806 sec.
+    Turnaround time :                            172806 sec.
+
+The output (if any) follows:
+
+Training with cuda
+dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
+CNN vgg16 model created, total trainable parameters: 81844290
+
+
+PS:
+
+Read file <hpc_logs/cnnguessr_vgg16.err> for stderr output of this job.
+
