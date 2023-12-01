@@ -6,9 +6,9 @@
 
 depth=8
 numheads=8
-epoch=50
+epoch=100
 optim="Adam"
-lr="5e-5"
+lr="3e-5"
 batch=16
 augment="aug"
 

@@ -65,9 +65,9 @@ def main(args):
     print(f'Total trainable parameters: {numparams}')
 
     if args.optimizer == 'Adam':
-        optimizer = optim.Adam(guessr.parameters(), lr=args.lr, weight_decay=1e-6)
+        optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
     elif args.optimizer == 'SGD':
-        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-6)
+        optimizer = optim.SGD(guessr.parameters(), lr=args.lr, momentum=0.9)
 
     lf = lambda x: ((1 + math.cos(x * math.pi / args.epochs)) / 2) * (1 - args.lrf) + args.lrf
     scheduler = lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
