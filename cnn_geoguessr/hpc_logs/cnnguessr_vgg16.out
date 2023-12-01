@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lx11>
-Subject: Job 2110347: <cnnguessr> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@lx10>
+Subject: Job 2148700: <cnnguessr> in cluster <lila> Exited
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Tue Nov 28 13:14:30 2023
-Job was executed on host(s) <2*lx11>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Tue Nov 28 13:14:31 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov 30 13:36:31 2023
+Job was executed on host(s) <2*lx10>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov 30 13:36:35 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Tue Nov 28 13:14:31 2023
-Terminated at Thu Nov 30 13:14:36 2023
-Results reported at Thu Nov 30 13:14:36 2023
+Started at Thu Nov 30 13:36:35 2023
+Terminated at Thu Nov 30 13:46:23 2023
+Results reported at Thu Nov 30 13:46:23 2023
 
 Your job looked like:
 
@@ -20,9 +20,9 @@ Your job looked like:
 #BSUB -eo hpc_logs/cnnguessr_vgg16.err
 
 model="vgg16"
-epoch=200
+epoch=100
 optim="Adam"
-lr="5e-4"
+lr="1e-3"
 batch=16
 
 conda activate cuda111_torch
@@ -36,21 +36,21 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_RUNLIMIT: job killed after reaching LSF run time limit.
-Exited with exit code 140.
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
 
 Resource usage summary:
 
-    CPU time :                                   344350.00 sec.
+    CPU time :                                   1104.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             70.97 GB
+    Average Memory :                             50.68 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   172806 sec.
-    Turnaround time :                            172806 sec.
+    Run time :                                   589 sec.
+    Turnaround time :                            592 sec.
 
 The output (if any) follows:
 
