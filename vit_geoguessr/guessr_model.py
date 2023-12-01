@@ -97,7 +97,7 @@ class ViTGeoGuessr(nn.Module):
     def __init__(self, img_w=256, img_h=128, patch_size=16, in_c=3, embed_dim=768, 
                  depth=12, num_heads=12, mlp_ratio=4., qkv_bias=True, qk_scale=None, 
                  drop_ratio=0., attn_drop_ratio=0., drop_path_ratio=0., init_weight=False, 
-                 embed_layer=PatchEmbed, norm_layer=None, act_layer=None):
+                 embed_layer=PatchEmbed, norm_layer=nn.LayerNorm, act_layer=None):
         super(ViTGeoGuessr, self).__init__()
         self.num_classes = 2
         self.num_features = self.embed_dim = embed_dim
@@ -163,7 +163,7 @@ def _init_vit_weights(m):
 
 def vit_guessr(depth=12, num_heads=12):
     guessr = ViTGeoGuessr(img_w=256, img_h=128, patch_size=16, embed_dim=768, 
-                          depth=depth, num_heads=num_heads, init_weight=False,
+                          depth=depth, num_heads=num_heads, init_weight=True,
                           drop_ratio=.3, attn_drop_ratio=.3, drop_path_ratio=.3)
     
     return guessr
