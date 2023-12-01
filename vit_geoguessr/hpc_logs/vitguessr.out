@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lt20>
-Subject: Job 2117248: <vitguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lx04>
+Subject: Job 2152595: <vitguessr> in cluster <lila> Done
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Nov 29 01:28:41 2023
-Job was executed on host(s) <2*lt20>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Nov 29 01:28:41 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Fri Dec  1 01:46:17 2023
+Job was executed on host(s) <2*lx04>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Fri Dec  1 01:46:17 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Wed Nov 29 01:28:41 2023
-Terminated at Thu Nov 30 20:57:03 2023
-Results reported at Thu Nov 30 20:57:03 2023
+Started at Fri Dec  1 01:46:17 2023
+Terminated at Fri Dec  1 15:03:01 2023
+Results reported at Fri Dec  1 15:03:01 2023
 
 Your job looked like:
 
@@ -19,11 +19,11 @@ Your job looked like:
 #BSUB -oo hpc_logs/vitguessr.out
 #BSUB -eo hpc_logs/vitguessr.err
 
-depth=12
+depth=8
 numheads=8
-epoch=75
+epoch=50
 optim="Adam"
-lr="1e-4"
+lr="5e-5"
 batch=16
 augment="aug"
 
@@ -42,28 +42,28 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   445378.00 sec.
-    Max Memory :                                 70 GB
-    Average Memory :                             69.98 GB
+    CPU time :                                   133714.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.91 GB
     Total Requested Memory :                     128.00 GB
-    Delta Memory :                               58.00 GB
+    Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   156504 sec.
-    Turnaround time :                            156502 sec.
+    Run time :                                   47806 sec.
+    Turnaround time :                            47804 sec.
 
 The output (if any) follows:
 
 Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
-Total trainable parameters: 85747970
+Total trainable parameters: 57396482
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000232
-2     Region        250    0.012573
-3    Country        750    0.125906
-4  Continent       2500    0.478122
+1       City         25    0.000125
+2     Region        250    0.017541
+3    Country        750    0.146225
+4  Continent       2500    0.535733
 
 
 PS:
