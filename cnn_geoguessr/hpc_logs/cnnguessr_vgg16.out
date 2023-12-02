@@ -1,13 +1,13 @@
 Sender: LSF System <lsfadmin@lx10>
-Subject: Job 2148700: <cnnguessr> in cluster <lila> Exited
+Subject: Job 2149193: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov 30 13:36:31 2023
-Job was executed on host(s) <2*lx10>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov 30 13:36:35 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov 30 13:48:07 2023
+Job was executed on host(s) <2*lx10>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov 30 13:48:11 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Thu Nov 30 13:36:35 2023
-Terminated at Thu Nov 30 13:46:23 2023
-Results reported at Thu Nov 30 13:46:23 2023
+Started at Thu Nov 30 13:48:11 2023
+Terminated at Fri Dec  1 20:03:44 2023
+Results reported at Fri Dec  1 20:03:44 2023
 
 Your job looked like:
 
@@ -36,27 +36,32 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_OWNER: job killed by owner.
-Exited with exit code 130.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   1104.00 sec.
+    CPU time :                                   313633.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             50.68 GB
+    Average Memory :                             70.96 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   589 sec.
-    Turnaround time :                            592 sec.
+    Run time :                                   108932 sec.
+    Turnaround time :                            108937 sec.
 
 The output (if any) follows:
 
 Training with cuda
 dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 56153
 CNN vgg16 model created, total trainable parameters: 81844290
+       Range  Distances  Proportion
+0     Street          1    0.000000
+1       City         25    0.000000
+2     Region        250    0.000000
+3    Country        750    0.000000
+4  Continent       2500    0.004238
 
 
 PS:

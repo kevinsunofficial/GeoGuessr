@@ -161,4 +161,6 @@ cython_debug/
 
 .DS_Store
 
+# large models
 *ViTGuessr_*.pth
+*vgg16_*.pth
