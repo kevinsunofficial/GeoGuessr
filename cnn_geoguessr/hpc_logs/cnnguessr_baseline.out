@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lu07>
-Subject: Job 2149210: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lu08>
+Subject: Job 2169291: <cnnguessr> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Thu Nov 30 13:49:14 2023
-Job was executed on host(s) <2*lu07>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Thu Nov 30 13:49:17 2023
+Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Fri Dec  1 13:33:31 2023
+Job was executed on host(s) <2*lu08>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Fri Dec  1 14:04:03 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Thu Nov 30 13:49:17 2023
-Terminated at Fri Dec  1 08:46:46 2023
-Results reported at Fri Dec  1 08:46:46 2023
+Started at Fri Dec  1 14:04:03 2023
+Terminated at Sat Dec  2 12:19:21 2023
+Results reported at Sat Dec  2 12:19:21 2023
 
 Your job looked like:
 
@@ -41,16 +41,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   191593.00 sec.
+    CPU time :                                   219209.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             70.91 GB
+    Average Memory :                             70.93 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   68249 sec.
-    Turnaround time :                            68252 sec.
+    Run time :                                   80118 sec.
+    Turnaround time :                            81950 sec.
 
 The output (if any) follows:
 
@@ -59,10 +59,10 @@ dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 561
 CNN baseline model created, total trainable parameters: 131326
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000427
-2     Region        250    0.039357
-3    Country        750    0.273556
-4  Continent       2500    0.699589
+1       City         25    0.000588
+2     Region        250    0.044165
+3    Country        750    0.284918
+4  Continent       2500    0.732517
 
 
 PS:
