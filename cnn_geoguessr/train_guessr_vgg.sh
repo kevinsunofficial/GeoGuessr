@@ -1,11 +1,11 @@
 #!/bin/bash -l
 
-#BSUB -J cnnguessr
-#BSUB -oo hpc_logs/cnnguessr_vgg16.out
-#BSUB -eo hpc_logs/cnnguessr_vgg16.err
+#BSUB -J cnnguessr_vgg
+#BSUB -oo hpc_logs/cnnguessr_vgg.out
+#BSUB -eo hpc_logs/cnnguessr_vgg.err
 
-model="vgg16"
-epoch=200
+model="vgg"
+epoch=250
 optim="Adam"
 lr="5e-4"
 batch=16

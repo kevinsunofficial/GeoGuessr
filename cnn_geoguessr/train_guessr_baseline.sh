@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#BSUB -J cnnguessr
+#BSUB -J cnnguessr_baseline
 #BSUB -oo hpc_logs/cnnguessr_baseline.out
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 

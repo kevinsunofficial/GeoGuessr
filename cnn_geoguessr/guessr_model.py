@@ -36,16 +36,19 @@ class CNNGuessr(nn.Module):
 LAYER_STRUCTURE = {
     'baseline': [32, 'M', 64, 'M', 64, 'M', 32, 'M', 16, 'M'],
     'vgg16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
+    'vgg': [64, 'M', 128, 'M', 256, 'M', 512, 'M', 512, 'M']
 }
 
 CONV_OUT_DIM = {
     'baseline': 16 * 4 * 8,
     'vgg16': 512 * 4 * 8,
+    'vgg': 512 * 4 * 8
 }
 
 HIDDEN_DIM = {
     'baseline': 100,
-    'vgg16': 4096
+    'vgg16': 4096,
+    'vgg': 4096
 }
 
 

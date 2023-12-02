@@ -163,4 +163,4 @@ cython_debug/
 
 # large models
 *ViTGuessr_*.pth
-*vgg16_*.pth
+*vgg*_*.pth
