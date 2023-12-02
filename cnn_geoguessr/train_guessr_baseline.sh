@@ -5,9 +5,9 @@
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 
 model="baseline"
-epoch=250
+epoch=100
 optim="Adam"
-lr="5e-4"
+lr="1e-3"
 batch=16
 augment="aug"
 
