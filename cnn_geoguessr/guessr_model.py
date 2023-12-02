@@ -4,7 +4,7 @@ import torch.nn as nn
 
 class CNNGuessr(nn.Module):
     def __init__(self, conv, conv_out, hidden_classes, drop_ratio=0.5, 
-                 img_w=256, img_h=128, init_weight=False):
+                 img_w=256, img_h=128, init_weight=True):
         super(CNNGuessr, self).__init__()
 
         self.img_size = (img_h, img_w)
