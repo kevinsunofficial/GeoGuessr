@@ -61,8 +61,8 @@ def main(args):
 
     np.save(osp.join(args.out_dir, 'train_images.npy'), train_images)
     np.save(osp.join(args.out_dir, 'test_images.npy'), test_images)
-    train_labels.to_csv(osp.join(args.out_dir, 'train_images.csv'), header=True)
-    test_labels.to_csv(osp.join(args.out_dir, 'test_images.csv'), header=True)
+    train_labels.to_csv(osp.join(args.out_dir, 'train_images.csv'), header=True, index=False)
+    test_labels.to_csv(osp.join(args.out_dir, 'test_images.csv'), header=True, index=False)
 
     print(f'Preprocessing complete. Files saved to {args.out_dir}')
 
