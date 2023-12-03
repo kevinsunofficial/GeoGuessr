@@ -7,11 +7,11 @@ from tqdm import tqdm
 
 import torch
 from torchvision import transforms
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 import torch.optim as optim
 from torch.autograd import Variable
 
-from geodataset import GeoDataset, rawGeoDataset
+from geodataset import GeoDataset
 from guessr_model import cnn_guessr
 from utils import distance_loss, train_epoch, eval_epoch, plot_loss, plot_map, plot_stats
 
@@ -30,36 +30,26 @@ def main(args):
 
     print(f'Training with {device}')
     
-    if args.augment:
-        img_transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.RandomHorizontalFlip(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-        ])
-    else:
-        img_transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-        ])
-    
-    if args.raw_data:
-        geo_dataset = rawGeoDataset(args.root_dir, args.img_w, args.img_h, args.label_name, img_transform)
-    else:
-        geo_dataset = GeoDataset(args.root_dir, args.img_w, args.img_h, args.label_name, img_transform)
-    dataset_size = len(geo_dataset)
-    train_size = int(dataset_size * args.train_ratio)
-    valid_size = dataset_size - train_size
+    train_transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.RandomHorizontalFlip(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+    ])
+    test_transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+    ])
+
+    train_dataset = GeoDataset(args.input_dir, 'train', train_transform)
+    valid_dataset = GeoDataset(args.input_dir, 'test', test_transform)
+    train_size, valid_size = len(train_dataset), len(valid_dataset)
 
     BATCH_SIZE = args.batch_size
-    torch.manual_seed(args.seed)
-
-    train_geo_dataset, valid_geo_dataset = random_split(geo_dataset, [train_size, valid_size])
-    # num_workers = min([os.cpu_count(), BATCH_SIZE if BATCH_SIZE > 1 else 0, 8])
     num_workers = 0
-    train_loader = DataLoader(train_geo_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers)
-    valid_loader = DataLoader(valid_geo_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers)
+    valid_loader = DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers)
     
-    print(f'dataset_size: {dataset_size}, randomly split into train_size: {train_size} and valid_size: {valid_size}')
+    print(f'train_size: {train_size} and valid_size: {valid_size}')
 
     guessr = cnn_guessr(args.model).to(device)
 
@@ -110,21 +100,14 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--img_w', type=int, default=256)
-    parser.add_argument('--img_h', type=int, default=128)
-    parser.add_argument('--augment', action='store_true', default=False)
+    parser.add_argument('--input_dir', type=str, required=True)
+    parser.add_argument('--out_dir', type=str, required=True)
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--radius', type=float, default=1.)
     parser.add_argument('--model', type=str, default='baseline')
     parser.add_argument('--optimizer', type=str, default='Adam')
-    parser.add_argument('--root_dir', type=str, required=True)
-    parser.add_argument('--label_name', type=str, default='coords_date.csv')
     parser.add_argument('--epochs', type=int, default=100)
-    parser.add_argument('--seed', type=int, default=977)
-    parser.add_argument('--raw_data', action='store_true', default=False)
-    parser.add_argument('--train_ratio', type=float, default=0.7)
-    parser.add_argument('--out_dir', type=str, required=True)
     parser.add_argument('--save_model', action='store_true', default=False)
 
     args = parser.parse_args()
