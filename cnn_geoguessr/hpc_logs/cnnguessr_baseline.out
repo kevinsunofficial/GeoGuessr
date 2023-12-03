@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lu08>
-Subject: Job 2169291: <cnnguessr> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lx13>
+Subject: Job 2194094: <cnnguessr_baseline> in cluster <lila> Done
 
-Job <cnnguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Fri Dec  1 13:33:31 2023
-Job was executed on host(s) <2*lu08>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Fri Dec  1 14:04:03 2023
+Job <cnnguessr_baseline> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sat Dec  2 14:35:57 2023
+Job was executed on host(s) <2*lx13>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sat Dec  2 14:35:58 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Fri Dec  1 14:04:03 2023
-Terminated at Sat Dec  2 12:19:21 2023
-Results reported at Sat Dec  2 12:19:21 2023
+Started at Sat Dec  2 14:35:58 2023
+Terminated at Sat Dec  2 21:42:54 2023
+Results reported at Sat Dec  2 21:42:54 2023
 
 Your job looked like:
 
@@ -15,14 +15,14 @@ Your job looked like:
 # LSBATCH: User input
 #!/bin/bash -l
 
-#BSUB -J cnnguessr
+#BSUB -J cnnguessr_baseline
 #BSUB -oo hpc_logs/cnnguessr_baseline.out
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 
 model="baseline"
-epoch=250
+epoch=100
 optim="Adam"
-lr="5e-4"
+lr="1e-3"
 batch=16
 augment="aug"
 
@@ -41,16 +41,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   219209.00 sec.
+    CPU time :                                   65953.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             70.93 GB
+    Average Memory :                             70.85 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   80118 sec.
-    Turnaround time :                            81950 sec.
+    Run time :                                   25618 sec.
+    Turnaround time :                            25617 sec.
 
 The output (if any) follows:
 
@@ -59,10 +59,10 @@ dataset_size: 187176, randomly split into train_size: 131023 and valid_size: 561
 CNN baseline model created, total trainable parameters: 131326
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000588
-2     Region        250    0.044165
-3    Country        750    0.284918
-4  Continent       2500    0.732517
+1       City         25    0.000285
+2     Region        250    0.035902
+3    Country        750    0.251313
+4  Continent       2500    0.704557
 
 
 PS:
