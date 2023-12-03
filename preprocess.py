@@ -24,12 +24,12 @@ def resize_img(img_name, img_w=256, img_h=128):
 
 
 def main(args):
-    labels = pd.read_csv(osp.join(args.data_dir, 'images.csv'), header=0, index_col=None)
+    labels = pd.read_csv(osp.join(args.input_dir, 'images.csv'), header=0, index_col=None)
     labels = labels.drop(11059).reset_index(drop=True) # hard-coded for single missing item
     labels.lat /= 90
     labels.lng /= 180
 
-    img_dir = osp.join(args.data_dir, 'images')
+    img_dir = osp.join(args.input_dir, 'images')
 
     print(f'Split training and testing data with ratio {args.train_ratio}')
     train_labels = labels.sample(frac=args.train_ratio, random_state=args.seed)
@@ -71,12 +71,12 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, required=True)
+    parser.add_argument('--input_dir', type=str, required=True)
+    parser.add_argument('--out_dir', type=str, required=True)
     parser.add_argument('--img_w', type=int, default=256)
     parser.add_argument('--img_h', type=int, default=128)
     parser.add_argument('--train_ratio', type=float, default=0.8)
     parser.add_argument('--seed', type=int, default=977)
-    parser.add_argument('--out_dir', type=str, required=True)
 
     args = parser.parse_args()
 
