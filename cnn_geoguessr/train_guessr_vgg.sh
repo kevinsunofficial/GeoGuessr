@@ -12,7 +12,7 @@ batch=16
 
 conda activate cuda111_torch
 
-python train.py --input_dir /data/leslie/suny4/geo/world_panorama/ \
+python train.py --input_dir /data/leslie/suny4/geo/geoguessr_data/ \
     --out_dir "./results/${model}_b${batch}_${optim}${lr}_${epoch}/" \
     --model $model --epochs $epoch --optimizer $optim --lr $lr --batch_size $batch \
     --save_model
