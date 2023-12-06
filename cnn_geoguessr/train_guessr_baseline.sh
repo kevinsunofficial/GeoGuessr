@@ -5,9 +5,9 @@
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 
 model="baseline"
-epoch=100
+epoch=250
 optim="Adam"
-lr="1e-3"
+lr="5e-4"
 batch=16
 
 conda activate cuda111_torch

@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lx14>
-Subject: Job 2227438: <cnnguessr_baseline> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@lu03>
+Subject: Job 2227561: <cnnguessr_vgg> in cluster <lila> Exited
 
-Job <cnnguessr_baseline> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 11:16:03 2023
-Job was executed on host(s) <2*lx14>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 11:17:25 2023
+Job <cnnguessr_vgg> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 11:37:12 2023
+Job was executed on host(s) <2*lu03>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 11:45:10 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Wed Dec  6 11:17:25 2023
-Terminated at Wed Dec  6 14:53:29 2023
-Results reported at Wed Dec  6 14:53:29 2023
+Started at Wed Dec  6 11:45:10 2023
+Terminated at Wed Dec  6 14:53:34 2023
+Results reported at Wed Dec  6 14:53:34 2023
 
 Your job looked like:
 
@@ -15,14 +15,14 @@ Your job looked like:
 # LSBATCH: User input
 #!/bin/bash -l
 
-#BSUB -J cnnguessr_baseline
-#BSUB -oo hpc_logs/cnnguessr_baseline.out
-#BSUB -eo hpc_logs/cnnguessr_baseline.err
+#BSUB -J cnnguessr_vgg
+#BSUB -oo hpc_logs/cnnguessr_vgg.out
+#BSUB -eo hpc_logs/cnnguessr_vgg.err
 
-model="baseline"
-epoch=100
+model="vgg"
+epoch=250
 optim="Adam"
-lr="1e-3"
+lr="5e-4"
 batch=16
 
 conda activate cuda111_torch
@@ -41,25 +41,25 @@ Exited with exit code 130.
 
 Resource usage summary:
 
-    CPU time :                                   33231.00 sec.
+    CPU time :                                   30846.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             70.77 GB
+    Average Memory :                             70.72 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
-    Max Processes :                              5
+    Max Processes :                              6
     Max Threads :                                21
-    Run time :                                   12965 sec.
-    Turnaround time :                            13046 sec.
+    Run time :                                   11305 sec.
+    Turnaround time :                            11782 sec.
 
 The output (if any) follows:
 
 Training with cuda
 train_size: 149741 and valid_size: 37435
-CNN baseline model created, total trainable parameters: 131326
+CNN vgg model created, total trainable parameters: 71034882
 
 
 PS:
 
-Read file <hpc_logs/cnnguessr_baseline.err> for stderr output of this job.
+Read file <hpc_logs/cnnguessr_vgg.err> for stderr output of this job.
 
