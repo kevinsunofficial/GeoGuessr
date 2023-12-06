@@ -10,7 +10,7 @@ from torchvision import transforms
 from torch.autograd import Variable
 
 from guessr_model import vit_guessr
-from utils import geo_distance
+from utils import geo_distance, resize_img
 
 
 def main(args):
@@ -31,7 +31,7 @@ def main(args):
     img_path = args.img_path
     assert osp.exists(img_path), f'File {img_path} does not exist.'
 
-    img = np.array(Image.open(img_path).resize((args.img_w, args.img_h)), dtype=np.float32)
+    img = resize_img(img_path, args.img_w, args.img_h)
     img = img_transform(img)
     img = torch.unsqueeze(img, dim=0)
 

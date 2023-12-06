@@ -2,6 +2,7 @@ import os
 import os.path as osp
 import numpy as np
 import pandas as pd
+from PIL import Image
 import torch
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
@@ -130,3 +131,19 @@ def plot_stats(plot_dir, ground_truth, prediction, mode, epochs):
 
     plt.savefig(osp.join(plot_dir, f'distr_dist_{mode}_epochs_{epochs}.png'))
     plt.clf()
+
+
+def resize_img(img_name, img_w=256, img_h=128):
+    with Image.open(img_name) as img:
+        width, height = img.size
+        ideal_w = height * 2
+        if width > ideal_w:
+            l, r = (width - ideal_w) // 2, (width + ideal_w) // 2
+            img = img.crop((l, 0, r, height))
+        img.thumbnail((img_w, img_h))
+        array = np.array(img, dtype=np.float32)
+
+    assert array.shape == (img_h, img_w, 3), \
+        f'Image shape {array.shape} mismatch, expecting ({img_h}, {img_w}, 3)'
+    
+    return array
