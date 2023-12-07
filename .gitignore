@@ -164,3 +164,7 @@ cython_debug/
 # large models
 *ViTGuessr_*.pth
 *vgg*_*.pth
+
+# preprocess logs
+preprocess.err
+preprocess.out
