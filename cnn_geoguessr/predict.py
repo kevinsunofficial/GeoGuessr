@@ -80,7 +80,9 @@ def main(args):
     greyscale_cam = cam(input_tensor=img, targets=targets)[0]
     visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True)
 
-    plt.imshow(visualization)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+    im = ax1.imshow(rgb_img / 255.)
+    im = ax2.imshow(visualization)
     plt.show()
 
 

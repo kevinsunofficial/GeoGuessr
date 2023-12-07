@@ -2,6 +2,7 @@ import os
 import os.path as osp
 import argparse
 from functools import partial
+from typing import Any
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -15,6 +16,20 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 
 from guessr_model import vit_guessr
 from utils import distance_loss, geo_distance, resize_img
+
+
+class ReshapeTransform:
+    def __init__(self, model):
+        input_size = model.patch_embed.img_size
+        patch_size = model.patch_embed.patch_size
+        self.h = input_size[0] // patch_size[0]
+        self.w = input_size[1] // patch_size[1]
+    
+    def __call__(self, x):
+        res = x[:, 1, :].reshape(x.size(0), self.h, self.w, x.size(2))
+        res = res.permute(0, 3, 1, 2)
+
+        return res
 
 
 class GeoDistanceTarget:
@@ -78,9 +93,12 @@ def main(args):
     targets = [GeoDistanceTarget(label, partial(distance_loss, R=1))]
 
     greyscale_cam = cam(input_tensor=img, targets=targets)[0]
-    visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True)
+    visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True,
+                                      reshape_transform=ReshapeTransform(guessr))
 
-    plt.imshow(visualization)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+    im = ax1.imshow(rgb_img / 255.)
+    im = ax2.imshow(visualization)
     plt.show()
 
 
