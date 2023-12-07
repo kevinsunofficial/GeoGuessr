@@ -26,7 +26,7 @@ def main(args):
         device = 'mps:0'
     device = torch.device(device)
 
-    print(f'Training with {device}')
+    print(f'Training with {device}\n')
     
     train_transform = transforms.Compose([
         transforms.ToTensor(),
@@ -47,12 +47,12 @@ def main(args):
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers)
     valid_loader = DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers)
     
-    print(f'train_size: {train_size} and valid_size: {valid_size}')
+    print(f'train_size: {train_size} and valid_size: {valid_size}\n')
 
     guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
 
     numparams = sum(param.numel() for param in guessr.parameters())
-    print(f'Total trainable parameters: {numparams}')
+    print(f'Total trainable parameters: {numparams}\n')
 
     if args.optimizer == 'Adam':
         optimizer = optim.Adam(guessr.parameters(), lr=args.lr)
