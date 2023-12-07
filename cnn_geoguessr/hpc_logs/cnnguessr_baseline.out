@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lx14>
-Subject: Job 2227438: <cnnguessr_baseline> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@lx10>
+Subject: Job 2231106: <cnnguessr_baseline> in cluster <lila> Done
 
-Job <cnnguessr_baseline> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 11:16:03 2023
-Job was executed on host(s) <2*lx14>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 11:17:25 2023
+Job <cnnguessr_baseline> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 15:46:05 2023
+Job was executed on host(s) <2*lx10>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 16:05:46 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Wed Dec  6 11:17:25 2023
-Terminated at Wed Dec  6 14:53:29 2023
-Results reported at Wed Dec  6 14:53:29 2023
+Started at Wed Dec  6 16:05:46 2023
+Terminated at Thu Dec  7 14:41:00 2023
+Results reported at Thu Dec  7 14:41:00 2023
 
 Your job looked like:
 
@@ -20,9 +20,9 @@ Your job looked like:
 #BSUB -eo hpc_logs/cnnguessr_baseline.err
 
 model="baseline"
-epoch=100
+epoch=250
 optim="Adam"
-lr="1e-3"
+lr="5e-4"
 batch=16
 
 conda activate cuda111_torch
@@ -36,27 +36,32 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_OWNER: job killed by owner.
-Exited with exit code 130.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   33231.00 sec.
+    CPU time :                                   210480.00 sec.
     Max Memory :                                 71 GB
-    Average Memory :                             70.77 GB
+    Average Memory :                             70.90 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   12965 sec.
-    Turnaround time :                            13046 sec.
+    Run time :                                   81314 sec.
+    Turnaround time :                            82495 sec.
 
 The output (if any) follows:
 
 Training with cuda
 train_size: 149741 and valid_size: 37435
 CNN baseline model created, total trainable parameters: 131326
+       Range  Distances  Proportion
+0     Street          1    0.000000
+1       City         25    0.000427
+2     Region        250    0.048270
+3    Country        750    0.315694
+4  Continent       2500    0.747269
 
 
 PS:
