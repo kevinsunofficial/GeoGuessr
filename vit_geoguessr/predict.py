@@ -1,27 +1,57 @@
 import os
 import os.path as osp
 import argparse
+from functools import partial
+from typing import Any
 import numpy as np
 import pandas as pd
 from PIL import Image
+import matplotlib.pyplot as plt
 
 import torch
 from torchvision import transforms
 from torch.autograd import Variable
+from pytorch_grad_cam import GradCAM
+from pytorch_grad_cam.utils.image import show_cam_on_image
 
 from guessr_model import vit_guessr
-from utils import geo_distance, resize_img
+from utils import distance_loss, geo_distance, resize_img
+
+
+class ReshapeTransform:
+    def __init__(self, model):
+        input_size = model.patch_embed.img_size
+        patch_size = model.patch_embed.patch_size
+        self.h = input_size[0] // patch_size[0]
+        self.w = input_size[1] // patch_size[1]
+    
+    def __call__(self, x):
+        res = x[:, 1, :].reshape(x.size(0), self.h, self.w, x.size(2))
+        res = res.permute(0, 3, 1, 2)
+
+        return res
+
+
+class GeoDistanceTarget:
+    def __init__(self, label, criterion):
+        self.label = label
+        self.criterion = criterion
+    
+    def __call__(self, model_output):
+        return self.criterion(model_output.unsqueeze(0), self.label)
 
 
 def main(args):
     device = 'cpu'
+    use_cuda = False
     if torch.cuda.is_available():
         device = 'cuda'
+        use_cuda = True
     elif torch.backends.mps.is_available():
         device = 'mps:0'
     device = torch.device(device)
 
-    print(f'Training with {device}')
+    print(f'Testing with {device}\n')
 
     img_transform = transforms.Compose([
         transforms.ToTensor(),
@@ -31,42 +61,55 @@ def main(args):
     img_path = args.img_path
     assert osp.exists(img_path), f'File {img_path} does not exist.'
 
-    img = resize_img(img_path, args.img_w, args.img_h)
-    img = img_transform(img)
-    img = torch.unsqueeze(img, dim=0)
+    rgb_img = resize_img(img_path)
+    img = img_transform(rgb_img)
+    img = torch.unsqueeze(img, dim=0).to(device)
+    
+    actual_coord = np.array([args.actual_lat, args.actual_lng])
+    mult = np.array([90, 180])
+    label = torch.tensor(actual_coord / mult, dtype=torch.float32).unsqueeze(0).to(device)
 
     model_path = args.model_path
     assert osp.exists(model_path), f'File {model_path} does not exist.'
 
     guessr = vit_guessr(depth=args.depth, num_heads=args.num_heads).to(device)
     guessr.load_state_dict(torch.load(model_path, map_location=device))
+    target_layers = [guessr.blocks[-1].norm1]
     guessr.eval()
 
     with torch.no_grad():
         output = torch.squeeze(guessr(Variable(img).to(device))).cpu().numpy()
     
-    pred_coord = output * np.array([90, 180])
+    pred_coord = output * mult
     ns = 'N' if pred_coord[0] > 0 else 'S'
     we = 'E' if pred_coord[1] > 0 else 'W'
     
-    print(f'Predicted location: {abs(pred_coord[0]):.3}{ns}, {abs(pred_coord[1]):.3}{we}')
+    print(f'Predicted coordinate: {pred_coord[0]:.3} ({ns}), {pred_coord[1]:.3} ({we})')
 
-    if args.actual_lat is not None and args.actual_lng is not None:
-        actual_coord = np.array([args.actual_lat, args.actual_lng])
-        distance = geo_distance(pred_coord, actual_coord, std=False)
-        print(f'Distance from actual location: {distance:.3}km')
+    distance = geo_distance(np.array([pred_coord]), np.array([actual_coord]), std=False)[0]
+    print(f'Distance from actual location: {round(distance, 3)}km')
+
+    cam = GradCAM(model=guessr, target_layers=target_layers, use_cuda=use_cuda)
+    targets = [GeoDistanceTarget(label, partial(distance_loss, R=1))]
+
+    greyscale_cam = cam(input_tensor=img, targets=targets)[0]
+    visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True,
+                                      reshape_transform=ReshapeTransform(guessr))
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
+    im = ax1.imshow(rgb_img / 255.)
+    im = ax2.imshow(visualization)
+    plt.show()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_path', type=str, required=True)
     parser.add_argument('--model_path', type=str, required=True)
-    parser.add_argument('--img_w', type=int, default=256)
-    parser.add_argument('--img_h', type=int, default=128)
+    parser.add_argument('--actual_lat', type=float, required=True)
+    parser.add_argument('--actual_lng', type=float, required=True)
     parser.add_argument('--depth', type=int, default=12)
     parser.add_argument('--num_heads', type=int, default=12)
-    parser.add_argument('--actual_lat', type=float, default=None)
-    parser.add_argument('--actual_lng', type=float, default=None)
 
     args = parser.parse_args()
 
