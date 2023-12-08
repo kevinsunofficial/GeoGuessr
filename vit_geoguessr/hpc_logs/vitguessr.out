@@ -1,13 +1,13 @@
 Sender: LSF System <lsfadmin@lt05>
-Subject: Job 2227597: <vitguessr> in cluster <lila> Exited
+Subject: Job 2231112: <vitguessr> in cluster <lila> Done
 
-Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 11:51:21 2023
-Job was executed on host(s) <2*lt05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 12:02:43 2023
+Job <vitguessr> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 15:47:24 2023
+Job was executed on host(s) <2*lt05>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 16:20:39 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/vit_geoguessr> was used as the working directory.
-Started at Wed Dec  6 12:02:43 2023
-Terminated at Wed Dec  6 14:53:39 2023
-Results reported at Wed Dec  6 14:53:39 2023
+Started at Wed Dec  6 16:20:39 2023
+Terminated at Fri Dec  8 07:45:04 2023
+Results reported at Fri Dec  8 07:45:04 2023
 
 Your job looked like:
 
@@ -38,27 +38,32 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_OWNER: job killed by owner.
-Exited with exit code 130.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   31071.00 sec.
+    CPU time :                                   437509.00 sec.
     Max Memory :                                 70 GB
-    Average Memory :                             69.72 GB
+    Average Memory :                             69.97 GB
     Total Requested Memory :                     128.00 GB
     Delta Memory :                               58.00 GB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                21
-    Run time :                                   10257 sec.
-    Turnaround time :                            10938 sec.
+    Run time :                                   141867 sec.
+    Turnaround time :                            143860 sec.
 
 The output (if any) follows:
 
 Training with cuda
 train_size: 149741 and valid_size: 37435
 Total trainable parameters: 57396482
+       Range  Distances  Proportion
+0     Street          1    0.000000
+1       City         25    0.000267
+2     Region        250    0.027995
+3    Country        750    0.208682
+4  Continent       2500    0.634513
 
 
 PS:
