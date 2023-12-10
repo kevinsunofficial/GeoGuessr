@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@lu03>
-Subject: Job 2227561: <cnnguessr_vgg> in cluster <lila> Exited
+Sender: LSF System <lsfadmin@ln01>
+Subject: Job 2404073: <cnnguessr_vgg> in cluster <lila> Done
 
-Job <cnnguessr_vgg> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Wed Dec  6 11:37:12 2023
-Job was executed on host(s) <2*lu03>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Wed Dec  6 11:45:10 2023
+Job <cnnguessr_vgg> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sat Dec  9 23:15:30 2023
+Job was executed on host(s) <2*ln01>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sat Dec  9 23:23:57 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Wed Dec  6 11:45:10 2023
-Terminated at Wed Dec  6 14:53:34 2023
-Results reported at Wed Dec  6 14:53:34 2023
+Started at Sat Dec  9 23:23:57 2023
+Terminated at Sun Dec 10 12:53:15 2023
+Results reported at Sun Dec 10 12:53:15 2023
 
 Your job looked like:
 
@@ -20,7 +20,7 @@ Your job looked like:
 #BSUB -eo hpc_logs/cnnguessr_vgg.err
 
 model="vgg"
-epoch=250
+epoch=150
 optim="Adam"
 lr="5e-4"
 batch=16
@@ -36,27 +36,35 @@ conda deactivate
 
 ------------------------------------------------------------
 
-TERM_OWNER: job killed by owner.
-Exited with exit code 130.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   30846.00 sec.
-    Max Memory :                                 71 GB
-    Average Memory :                             70.72 GB
+    CPU time :                                   136096.00 sec.
+    Max Memory :                                 72 GB
+    Average Memory :                             71.92 GB
     Total Requested Memory :                     128.00 GB
-    Delta Memory :                               57.00 GB
+    Delta Memory :                               56.00 GB
     Max Swap :                                   -
-    Max Processes :                              6
-    Max Threads :                                21
-    Run time :                                   11305 sec.
-    Turnaround time :                            11782 sec.
+    Max Processes :                              5
+    Max Threads :                                20
+    Run time :                                   48560 sec.
+    Turnaround time :                            49065 sec.
 
 The output (if any) follows:
 
 Training with cuda
+
 train_size: 149741 and valid_size: 37435
-CNN vgg model created, total trainable parameters: 71034882
+
+CNN vgg model created, total trainable parameters: 5120274
+
+       Range  Distances  Proportion
+0     Street          1    0.000000
+1       City         25    0.000000
+2     Region        250    0.000000
+3    Country        750    0.000000
+4  Continent       2500    0.004007
 
 
 PS:
