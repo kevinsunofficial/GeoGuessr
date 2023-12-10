@@ -5,7 +5,7 @@
 #BSUB -eo hpc_logs/cnnguessr_vgg.err
 
 model="vgg"
-epoch=250
+epoch=150
 optim="Adam"
 lr="5e-4"
 batch=16
