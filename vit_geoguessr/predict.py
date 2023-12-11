@@ -26,7 +26,7 @@ class ReshapeTransform:
         self.w = input_size[1] // patch_size[1]
     
     def __call__(self, x):
-        res = x[:, 1, :].reshape(x.size(0), self.h, self.w, x.size(2))
+        res = x[:, 1:, :].reshape(x.size(0), self.h, self.w, x.size(2))
         res = res.permute(0, 3, 1, 2)
 
         return res
@@ -89,12 +89,12 @@ def main(args):
     distance = geo_distance(np.array([pred_coord]), np.array([actual_coord]), std=False)[0]
     print(f'Distance from actual location: {round(distance, 3)}km')
 
-    cam = GradCAM(model=guessr, target_layers=target_layers, use_cuda=use_cuda)
+    cam = GradCAM(model=guessr, target_layers=target_layers, use_cuda=True,
+                  reshape_transform=ReshapeTransform(guessr))
     targets = [GeoDistanceTarget(label, partial(distance_loss, R=1))]
 
     greyscale_cam = cam(input_tensor=img, targets=targets)[0]
-    visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True,
-                                      reshape_transform=ReshapeTransform(guessr))
+    visualization = show_cam_on_image(rgb_img / 255., greyscale_cam, use_rgb=True)
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8))
     im = ax1.imshow(rgb_img / 255.)
