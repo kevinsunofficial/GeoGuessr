@@ -7,7 +7,7 @@
 model="vgg"
 epoch=150
 optim="Adam"
-lr="5e-4"
+lr="5e-5"
 batch=16
 
 conda activate cuda111_torch

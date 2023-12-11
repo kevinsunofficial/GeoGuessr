@@ -1,13 +1,13 @@
-Sender: LSF System <lsfadmin@ln01>
-Subject: Job 2404073: <cnnguessr_vgg> in cluster <lila> Done
+Sender: LSF System <lsfadmin@lu06>
+Subject: Job 2407998: <cnnguessr_vgg> in cluster <lila> Done
 
-Job <cnnguessr_vgg> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sat Dec  9 23:15:30 2023
-Job was executed on host(s) <2*ln01>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sat Dec  9 23:23:57 2023
+Job <cnnguessr_vgg> was submitted from host <lilac-ln02> by user <suny4> in cluster <lila> at Sun Dec 10 15:49:31 2023
+Job was executed on host(s) <2*lu06>, in queue <gpuqueue>, as user <suny4> in cluster <lila> at Sun Dec 10 15:50:03 2023
 </home/suny4> was used as the home directory.
 </home/suny4/courses/GeoGuessr/cnn_geoguessr> was used as the working directory.
-Started at Sat Dec  9 23:23:57 2023
-Terminated at Sun Dec 10 12:53:15 2023
-Results reported at Sun Dec 10 12:53:15 2023
+Started at Sun Dec 10 15:50:03 2023
+Terminated at Mon Dec 11 07:44:09 2023
+Results reported at Mon Dec 11 07:44:09 2023
 
 Your job looked like:
 
@@ -22,7 +22,7 @@ Your job looked like:
 model="vgg"
 epoch=150
 optim="Adam"
-lr="5e-4"
+lr="5e-5"
 batch=16
 
 conda activate cuda111_torch
@@ -40,16 +40,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   136096.00 sec.
-    Max Memory :                                 72 GB
-    Average Memory :                             71.92 GB
+    CPU time :                                   150360.00 sec.
+    Max Memory :                                 71 GB
+    Average Memory :                             70.94 GB
     Total Requested Memory :                     128.00 GB
-    Delta Memory :                               56.00 GB
+    Delta Memory :                               57.00 GB
     Max Swap :                                   -
     Max Processes :                              5
-    Max Threads :                                20
-    Run time :                                   48560 sec.
-    Turnaround time :                            49065 sec.
+    Max Threads :                                21
+    Run time :                                   57247 sec.
+    Turnaround time :                            57278 sec.
 
 The output (if any) follows:
 
@@ -61,10 +61,10 @@ CNN vgg model created, total trainable parameters: 5120274
 
        Range  Distances  Proportion
 0     Street          1    0.000000
-1       City         25    0.000000
-2     Region        250    0.000000
-3    Country        750    0.000000
-4  Continent       2500    0.004007
+1       City         25    0.001523
+2     Region        250    0.115320
+3    Country        750    0.516629
+4  Continent       2500    0.848431
 
 
 PS:
